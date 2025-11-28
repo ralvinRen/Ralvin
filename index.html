@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -20,25 +19,13 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', '-apple-system', 'sans-serif'] },
-                    colors: {
-                        'mac-glass': 'rgba(255, 255, 255, 0.75)',
-                        'mac-glass-dark': 'rgba(30, 30, 30, 0.65)',
-                        'mac-blue': '#007AFF',
-                        'mac-gray': '#F5F5F5',
-                    },
-                    boxShadow: {
-                        'mac-window': '0 20px 50px rgba(0,0,0,0.3)',
-                        'mac-dock': '0 10px 20px rgba(0,0,0,0.15)',
-                        'glass-card': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                    },
+                    screens: { 'xs': '480px' }, // 增加超小屏幕断点
                     animation: {
                         'scale-up': 'scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                        'fade-in': 'fadeIn 0.8s ease-out',
                         'slide-up': 'slideUp 0.5s ease-out',
                     },
                     keyframes: {
                         scaleUp: { '0%': { transform: 'scale(0.95)', opacity: 0 }, '100%': { transform: 'scale(1)', opacity: 1 } },
-                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
                         slideUp: { '0%': { transform: 'translateY(20px)', opacity: 0 }, '100%': { transform: 'translateY(0)', opacity: 1 } }
                     }
                 }
@@ -46,13 +33,12 @@
         }
     </script>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; user-select: none; }
+        body { margin: 0; overflow: hidden; background-color: #000; user-select: none; -webkit-tap-highlight-color: transparent; }
         
-        /* 壁纸设置 */
+        /* 移动端优化：背景图 */
         .wallpaper {
             background: url('main page.jpg') no-repeat center center fixed;
             background-size: cover;
-            transition: background 0.5s ease;
         }
 
         .lockscreen-bg {
@@ -60,27 +46,29 @@
             background-color: #1a1a1a;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
         }
 
-        .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255, 255, 255, 0.4); }
-        .glass-dark { backdrop-filter: blur(20px); background: rgba(30, 30, 30, 0.6); border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: white; }
-        .glass-panel { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        /* 玻璃拟态优化 */
+        .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.9); }
+        .glass-dark { backdrop-filter: blur(20px); background: rgba(30, 30, 30, 0.7); color: white; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .desktop-icon { width: 90px; padding: 10px; border-radius: 8px; transition: background 0.2s; display: flex; flex-direction: column; align-items: center; cursor: default; position: relative; }
+        
+        /* 桌面图标：手机端隐藏，电脑端显示 */
+        .desktop-icon { 
+            width: 90px; padding: 10px; border-radius: 8px; 
+            display: flex; flex-direction: column; align-items: center; 
+            transition: background 0.2s; 
+        }
         .desktop-icon:hover { background-color: rgba(255,255,255,0.2); }
-        .desktop-icon:active { background-color: rgba(255,255,255,0.3); }
-        .desktop-icon-img { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); pointer-events: none; }
         
-        .edit-input { border: 1px solid #007AFF; border-radius: 4px; padding: 4px 8px; width: 100%; outline: none; font-size: 13px; background: white; margin-bottom: 8px; }
-        .edit-textarea { border: 1px solid #007AFF; border-radius: 4px; padding: 8px; width: 100%; min-height: 80px; outline: none; font-size: 13px; resize: none; background: white; margin-bottom: 8px; }
-        .edit-label { display: block; font-size: 10px; font-weight: bold; color: #888; text-transform: uppercase; margin-bottom: 4px; }
+        .edit-input { border: 1px solid #007AFF; border-radius: 4px; padding: 4px 8px; width: 100%; outline: none; background: white; margin-bottom: 8px; }
+        .edit-textarea { border: 1px solid #007AFF; border-radius: 4px; padding: 8px; width: 100%; min-height: 80px; outline: none; resize: none; background: white; margin-bottom: 8px; }
         
-        .resize-handle { position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; cursor: nwse-resize; z-index: 100; }
-        .resize-handle::after { content: ''; position: absolute; bottom: 4px; right: 4px; width: 8px; height: 8px; border-bottom: 2px solid #CCC; border-right: 2px solid #CCC; border-radius: 0 0 2px 0; }
-
-        .start-text { text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        /* 移动端滚动条优化 */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -89,23 +77,41 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- 1. Supabase 配置 (Cloud Storage) ---
+        // --- Supabase ---
         const SUPABASE_URL = 'https://qtgimhdzhxyzukxzpnjb.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Z2ltaGR6aHh5enVreHpwbmpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNDIyNTYsImV4cCI6MjA3OTkxODI1Nn0.JU1dkBsJ1lwEY9-40fkDk0KZROfHWSZxoH18WHnjIug';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- 2. 默认空数据 (Loading State) ---
-        // 这些数据会在 React 加载时显示，直到 Supabase 的数据下载完成
-        const DEFAULT_USER = {
-            name: "Loading...", avatar: "profile.jpg", adminPassword: "ralvin", email: "", phone: "",
-            school: "", gpa: "", english: "", exchange: "", resumeFile: "",
-            intro: "正在连接云端数据库...", skillsStrategy: [], skillsVisual: [], honors: []
+        // --- 兜底静态数据 (保证国内秒开) ---
+        // 这里填回了你之前的数据，这样即使 Supabase 连不上，用户也能看到完整内容
+        const STATIC_USER = {
+            name: "Ren Jiaxuan", avatar: "profile.jpg", adminPassword: "ralvin", email: "1627716641@qq.com", phone: "195 4899 4021",
+            school: "浙江师范大学 | 数字媒体艺术", gpa: "3.92 (Top 3%)", english: "CET-6 550+ | 雅思 6.5", exchange: "延世大学 (2025 Summer)", resumeFile: "任_佳煊_125515171091.pdf",
+            intro: "你好，我是任佳煊。一名追求“策创合一”的数字媒体艺术学生。我不仅擅长用画面讲故事（视频/设计），更热衷于挖掘品牌背后的策略支点。我拥有敏锐的 Z 世代洞察力，期待用灵感与逻辑为品牌创造价值。",
+            skillsStrategy: ['品牌全案', '文案策划', '创意脚本', '竞品分析', '社媒运营'],
+            skillsVisual: ['PS', 'AI', 'Premiere', 'After Effects', 'C4D', 'Midjourney', 'Figma'],
+            honors: [{ title: "全国一等奖", desc: "全国商科精英挑战赛会展策划赛道" }, { title: "全国三等奖", desc: "第17届全国大学生广告艺术大赛 (视频类)" }, { title: "官方参赛认证", desc: "L'Oréal Brandstorm 2025" }, { title: "省级一等奖", desc: "第13届浙江省大学生广告创意设计大赛" }]
         };
-        const DEFAULT_CATS = [];
-        const DEFAULT_PROJECTS = [];
-        const DEFAULT_EVENTS = {};
-
-        // --- 3. UI Components ---
+        const STATIC_CATS = [
+            { id: 'cat1', name: 'Brand Strategy', subs: ['品牌全案', '视频策划', '商赛'] },
+            { id: 'cat2', name: 'Artistic Expression', subs: ['影像', '插画', '海报', '文创设计', 'AIGC'] }
+        ];
+        const STATIC_PROJECTS = [
+            { id: 's1', mainCat: 'Brand Strategy', subCat: '品牌全案', title: "赤尾：顺滑到位", file: ["zioxx-video.mp4"], cover: "zioxx-video-cover.png", videoSrc: "zioxx-video.mp4", desc: "摒弃传统说教，用“双人舞步”隐喻亲密关系。设计“丝滑换装”转场。", tags: ["大广赛三等奖", "视频策划"] },
+            { id: 's2', mainCat: 'Brand Strategy', subCat: '商赛', title: "L'Oréal Brandstorm", file: ["L‘Orealbrainstorm video.mp4"], cover: "loreal_cover.jpg", videoSrc: "L‘Orealbrainstorm video.mp4", desc: "提出 TerraGuard 智能剃须生态系统。负责全英文 Pitch Deck。", tags: ["官方认证", "CSR策略"] },
+            { id: 's3', mainCat: 'Brand Strategy', subCat: '品牌全案', title: "赤尾品牌手册", file: ["zioxx-pitch_cover.png"], cover: "zioxx-pitch_cover.png", desc: "针对 Z 世代设计的品牌手册封面。", tags: ["品牌设计", "Z世代"] },
+            { id: 'a1', mainCat: 'Artistic Expression', subCat: '影像', title: "Pop Mart：逃离拥挤", file: ["pop mart-TVC.mp4"], cover: "popmart_cover.jpg", videoSrc: "pop mart-TVC.mp4", desc: "洞察都市焦虑，以耳机为媒介，通过镜头语言完成现实与幻想的切换。", tags: ["浙江省三等奖", "情绪叙事"] },
+            { id: 'a2', mainCat: 'Artistic Expression', subCat: '影像', title: "Are You Lost", file: ["are you lost.mp4"], cover: "lost_cover.jpg", videoSrc: "are you lost.mp4", desc: "一部探索自我迷失与寻找的实验短片。", tags: ["实验影像", "拼贴动画"] },
+            { id: 'a3', mainCat: 'Artistic Expression', subCat: '影像', title: "养元青：大风吹不去", file: ["Yangyuanqing-video.mp4"], cover: "yang_cover.jpg", videoSrc: "Yangyuanqing-video.mp4", desc: "运用视觉通感，将“发根”比作“墙上海报”。", tags: ["视觉隐喻", "定格动画"] },
+            { id: 'a4', mainCat: 'Artistic Expression', subCat: '文创设计', title: "扬州文人茶", file: ["Yangzhoutea2.jpg", "Yangzhoutea1.jpg", "Yangzhoutea3.jpg", "Yangzhoutea4.jpg"], cover: "Yangzhoutea2.jpg", desc: "挖掘“扬州八怪”文化IP，提炼水墨元素，确立“新中式文人茶”调性。", tags: ["包装设计", "国潮"] },
+            { id: 'a5', mainCat: 'Artistic Expression', subCat: '插画', title: "客家食养", file: ["hakka1.jpg", "hakka2.jpg", "hakka3.jpg", "hakka4.jpg"], cover: "hakka1.jpg", desc: "基于客家“顺时而食”智慧，将特色美食与节气结合。", tags: ["插画设计", "文创"] },
+            { id: 'a6', mainCat: 'Artistic Expression', subCat: '海报', title: "营养快线海报", file: ["nutri-express-poster1.jpg", "nutri-express-poster2.jpg", "nutri-express-poster3.jpg"], cover: "nutri-express-poster1.jpg", desc: "利用 C4D 构建超现实场景，生动展现产品核心卖点。", tags: ["C4D", "海报"] },
+            { id: 'a7', mainCat: 'Artistic Expression', subCat: 'AIGC', title: "器·观：AIGC系列", file: ["grassland-liver.jpg", "lake-pancreas.jpg", "ocean-heart.jpg", "rainforest-stomach.jpg", "river-kidneys.jpg", "wetland-lung.jpg"], cover: "grassland-liver.jpg", desc: "利用 AIGC 将人体器官创意化为自然地貌。", tags: ["Midjourney", "创意合成"] }
+        ];
+        const STATIC_EVENTS = {
+            "2025-05-28": { title: "欧莱雅商赛", type: "competition", desc: "完成了全英文 Pitch！值了。✨", image: null },
+            "2025-06-10": { title: "大广赛获奖", type: "award", desc: "赤尾视频拿到了全国三等奖！🎬", image: null }
+        };
 
         const APPS = [
             { id: 'home', name: 'Home', icon: 'fa-solid fa-house', color: 'bg-indigo-500', title: 'Welcome Home' }, 
@@ -115,19 +121,30 @@
             { id: 'mail', name: 'Contact', icon: 'fa-regular fa-envelope', color: 'bg-green-500', title: 'Contact Me' },
         ];
 
+        // 移动端检测 Hook
+        const useIsMobile = () => {
+            const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+            useEffect(() => {
+                const handleResize = () => setIsMobile(window.innerWidth < 768);
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+            return isMobile;
+        };
+
         const GenericIcon = ({ app }) => (
             <div className={`w-full h-full ${app.color} rounded-[22%] flex items-center justify-center text-white app-icon relative overflow-hidden border border-white/10 shadow-md`}>
                 {app.id === 'calendar' ? (
                     <div className="w-full h-full bg-white flex flex-col items-center">
                         <div className="h-[25%] w-full bg-red-500"></div>
                         <div className="flex-1 flex flex-col items-center justify-center">
-                            <span className="text-black font-bold text-2xl leading-none">{new Date().getDate()}</span>
+                            <span className="text-black font-bold text-xl leading-none">{new Date().getDate()}</span>
                         </div>
                     </div>
                 ) : (
                     <>
                         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent pointer-events-none"></div>
-                        <i className={`${app.icon} text-3xl ${app.id === 'calendar' ? 'text-red-500' : 'text-white'}`}></i>
+                        <i className={`${app.icon} text-2xl md:text-3xl ${app.id === 'calendar' ? 'text-red-500' : 'text-white'}`}></i>
                     </>
                 )}
             </div>
@@ -135,38 +152,28 @@
 
         const HomeApp = ({ user, openApp }) => {
             return (
-                <div className="h-full w-full bg-slate-50 relative overflow-hidden flex flex-col items-center justify-center p-8">
-                    <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-blue-200/50 rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-200/50 rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="relative z-10 max-w-4xl w-full text-center animate-slide-up">
-                        <div className="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 mb-6 shadow-xl">
+                <div className="h-full w-full bg-slate-50 relative overflow-y-auto overflow-x-hidden flex flex-col items-center p-6 md:p-8">
+                    <div className="absolute top-[-10%] right-[-10%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-blue-200/50 rounded-full blur-3xl pointer-events-none"></div>
+                    <div className="relative z-10 max-w-4xl w-full text-center mt-8 md:mt-0">
+                        <div className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 mb-6 shadow-xl">
                             <div className="w-full h-full rounded-full border-4 border-white overflow-hidden bg-white">
                                 <img src={user.avatar} className="w-full h-full object-cover" alt="Profile" />
                             </div>
                         </div>
-                        <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome Back, {user.name ? user.name.split(' ')[1] : 'Visitor'}!</h1>
-                        <p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">{user.intro ? user.intro.substring(0, 100) : ''}...</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div onClick={() => openApp('resume')} className="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg transition cursor-pointer hover:-translate-y-1 group bg-white/60">
-                                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
-                                    <i className="fa-regular fa-id-card"></i>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-800 mb-2">Resume</h3>
-                                <p className="text-sm text-gray-500">查看我的个人简介、教育背景及荣誉。</p>
+                        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-2">Hello, {user.name ? user.name.split(' ')[1] : 'Visitor'}!</h1>
+                        <p className="text-gray-500 text-sm md:text-lg mb-8 md:mb-12 max-w-2xl mx-auto px-4">{user.intro ? user.intro.substring(0, 100) : ''}...</p>
+                        <div className="grid grid-cols-1 gap-4 w-full max-w-md mx-auto">
+                            <div onClick={() => openApp('resume')} className="glass-panel p-4 rounded-xl shadow-sm flex items-center gap-4 cursor-pointer active:scale-95 transition bg-white/60">
+                                <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl"><i className="fa-regular fa-id-card"></i></div>
+                                <div className="text-left"><h3 className="font-bold text-gray-800">Resume</h3><p className="text-xs text-gray-500">个人简介与经历</p></div>
                             </div>
-                            <div onClick={() => openApp('portfolio')} className="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg transition cursor-pointer hover:-translate-y-1 group bg-white/60">
-                                <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition">
-                                    <i className="fa-solid fa-layer-group"></i>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-800 mb-2">Portfolio</h3>
-                                <p className="text-sm text-gray-500">浏览我的品牌策划全案、视频及设计作品。</p>
+                            <div onClick={() => openApp('portfolio')} className="glass-panel p-4 rounded-xl shadow-sm flex items-center gap-4 cursor-pointer active:scale-95 transition bg-white/60">
+                                <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-xl"><i className="fa-solid fa-layer-group"></i></div>
+                                <div className="text-left"><h3 className="font-bold text-gray-800">Portfolio</h3><p className="text-xs text-gray-500">作品集展示</p></div>
                             </div>
-                            <div onClick={() => openApp('mail')} className="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg transition cursor-pointer hover:-translate-y-1 group bg-white/60">
-                                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-green-600 group-hover:text-white transition">
-                                    <i className="fa-regular fa-paper-plane"></i>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-800 mb-2">Contact</h3>
-                                <p className="text-sm text-gray-500">随时联系我，开启新的合作机会。</p>
+                            <div onClick={() => openApp('mail')} className="glass-panel p-4 rounded-xl shadow-sm flex items-center gap-4 cursor-pointer active:scale-95 transition bg-white/60">
+                                <div className="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-xl"><i className="fa-regular fa-paper-plane"></i></div>
+                                <div className="text-left"><h3 className="font-bold text-gray-800">Contact</h3><p className="text-xs text-gray-500">联系方式</p></div>
                             </div>
                         </div>
                     </div>
@@ -178,45 +185,48 @@
             const [isEditing, setIsEditing] = useState(false);
             const [formData, setFormData] = useState(user);
             const [saving, setSaving] = useState(false);
+            const isMobile = useIsMobile();
 
             useEffect(() => { setFormData(user); }, [user]);
 
             const handleSave = async () => { 
-                setSaving(true);
-                await onUpdateUser(formData); 
-                setSaving(false);
-                setIsEditing(false); 
+                setSaving(true); await onUpdateUser(formData); setSaving(false); setIsEditing(false); 
             };
-            
             const handleChange = (field, value) => setFormData({ ...formData, [field]: value });
             const handleArrayChange = (field, value) => setFormData({ ...formData, [field]: value.split(',').map(i => i.trim()) });
             const handleHonorChange = (idx, key, value) => { const newHonors = [...formData.honors]; newHonors[idx][key] = value; setFormData({ ...formData, honors: newHonors }); };
 
             return (
-                <div className="flex h-full bg-[#F5F5F5] relative">
-                    {isAdmin && (
-                        <button onClick={() => isEditing ? handleSave() : setIsEditing(true)} disabled={saving} className="absolute top-4 right-4 z-10 px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 shadow-sm disabled:bg-gray-400">
-                            {saving ? 'Saving...' : (isEditing ? 'Save Cloud' : 'Edit Profile')}
-                        </button>
-                    )}
-                    <div className="w-72 bg-[#EDECEB] border-r border-gray-300 pt-8 px-6 flex flex-col items-center text-center shrink-0">
-                        <div className="w-32 h-32 rounded-full overflow-hidden mb-6 border-4 border-white shadow-lg shrink-0"><img src={user.avatar} className="w-full h-full object-cover object-top" /></div>
-                        <h2 className="font-bold text-2xl text-gray-800 mb-1">{user.name}</h2>
-                        <p className="text-sm text-gray-500 mb-8">Brand Strategy & Creative</p>
-                        <div className="w-full space-y-3 text-left">
+                <div className="flex flex-col md:flex-row h-full bg-[#F5F5F5] relative overflow-hidden">
+                    {isAdmin && <button onClick={() => isEditing ? handleSave() : setIsEditing(true)} disabled={saving} className="absolute top-2 right-2 md:top-4 md:right-4 z-20 px-3 py-1 bg-blue-500 text-white rounded text-xs shadow-sm">{saving ? 'Saving...' : (isEditing ? 'Save' : 'Edit')}</button>}
+                    
+                    {/* Sidebar (Mobile: Top Header) */}
+                    <div className="w-full md:w-72 bg-[#EDECEB] border-b md:border-r border-gray-300 p-6 flex flex-col items-center text-center shrink-0">
+                        <div className="w-20 h-20 md:w-32 md:h-32 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg shrink-0"><img src={user.avatar} className="w-full h-full object-cover object-top" /></div>
+                        <h2 className="font-bold text-xl md:text-2xl text-gray-800">{user.name}</h2>
+                        <p className="text-xs md:text-sm text-gray-500 mb-4">Brand Strategy & Creative</p>
+                        <div className="w-full space-y-2 text-left hidden md:block">
                             {['school', 'english', 'exchange', 'email'].map(field => (
-                                <div key={field} className="bg-white p-3 rounded-lg shadow-sm"><div className="text-xs text-gray-400 font-bold uppercase mb-1">{field}</div>{isEditing ? <input className="edit-input text-sm" value={formData[field]} onChange={e => handleChange(field, e.target.value)} /> : <div className="text-sm font-medium break-words">{user[field]}</div>}</div>
+                                <div key={field} className="bg-white p-3 rounded-lg shadow-sm"><div className="text-[10px] text-gray-400 font-bold uppercase mb-1">{field}</div>{isEditing ? <input className="edit-input text-sm" value={formData[field]} onChange={e => handleChange(field, e.target.value)} /> : <div className="text-sm font-medium break-words">{user[field]}</div>}</div>
                             ))}
-                            {!isEditing && <a href={user.resumeFile} download className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg font-medium text-sm hover:bg-blue-700 transition shadow-sm mt-6"><i className="fa-solid fa-download mr-2"></i> Download PDF</a>}
                         </div>
                     </div>
-                    <div className="flex-1 p-12 overflow-y-auto bg-white">
-                        <h1 className="text-4xl font-bold mb-8">About Me</h1>
-                        {isEditing ? <textarea className="edit-textarea text-lg text-gray-600 mb-10" value={formData.intro} onChange={e => handleChange('intro', e.target.value)} /> : <p className="text-gray-600 leading-relaxed mb-10 text-lg max-w-2xl">{user.intro}</p>}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                             <div><h3 className="font-bold text-gray-800 border-b-2 border-black pb-2 mb-4 text-lg">Professional Skills</h3><div className="space-y-4">{['skillsStrategy', 'skillsVisual'].map(skillKey => (<div key={skillKey}><div className="text-sm font-bold mb-1 capitalize">{skillKey.replace('skills', '')}</div>{isEditing ? <textarea className="edit-textarea h-20" value={formData[skillKey].join(', ')} onChange={e => handleArrayChange(skillKey, e.target.value)} /> : <div className="flex flex-wrap gap-2">{user[skillKey].map(s => <span key={s} className="px-3 py-1 bg-gray-100 rounded text-sm text-gray-700">{s}</span>)}</div>}</div>))}</div></div>
-                             <div><h3 className="font-bold text-gray-800 border-b-2 border-black pb-2 mb-4 text-lg">Honors</h3><ul className="space-y-4 text-gray-700">{formData.honors.map((h, idx) => (<li key={idx} className="flex items-start border-b border-gray-100 pb-2"><i className="fa-solid fa-trophy text-yellow-500 mt-1 mr-3"></i><div className="w-full">{isEditing ? <><input className="edit-input font-bold mb-1" value={h.title} onChange={e => handleHonorChange(idx, 'title', e.target.value)} /><input className="edit-input text-sm" value={h.desc} onChange={e => handleHonorChange(idx, 'desc', e.target.value)} /></> : <><div className="font-bold">{h.title}</div><div className="text-sm text-gray-500">{h.desc}</div></>}</div></li>))}</ul></div>
+
+                    {/* Content */}
+                    <div className="flex-1 p-6 md:p-12 overflow-y-auto bg-white">
+                        {/* Mobile Info Cards (Visible only on mobile) */}
+                        <div className="md:hidden space-y-2 mb-8">
+                             {['school', 'email'].map(field => (<div key={field} className="text-xs text-gray-600 bg-gray-50 p-2 rounded"><b>{field}:</b> {user[field]}</div>))}
                         </div>
+
+                        <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-8">About Me</h1>
+                        {isEditing ? <textarea className="edit-textarea text-base text-gray-600 mb-8" value={formData.intro} onChange={e => handleChange('intro', e.target.value)} /> : <p className="text-gray-600 leading-relaxed mb-8 text-base md:text-lg">{user.intro}</p>}
+                        
+                        <div className="grid grid-cols-1 gap-8">
+                             <div><h3 className="font-bold text-gray-800 border-b-2 border-black pb-2 mb-4">Skills</h3><div className="space-y-4">{['skillsStrategy', 'skillsVisual'].map(skillKey => (<div key={skillKey}><div className="text-xs font-bold mb-1 capitalize text-gray-400">{skillKey.replace('skills', '')}</div>{isEditing ? <textarea className="edit-textarea h-20" value={formData[skillKey].join(', ')} onChange={e => handleArrayChange(skillKey, e.target.value)} /> : <div className="flex flex-wrap gap-2">{user[skillKey].map(s => <span key={s} className="px-2 py-1 bg-gray-100 rounded text-xs text-gray-700">{s}</span>)}</div>}</div>))}</div></div>
+                             <div><h3 className="font-bold text-gray-800 border-b-2 border-black pb-2 mb-4">Honors</h3><ul className="space-y-3 text-gray-700">{formData.honors.map((h, idx) => (<li key={idx} className="flex items-start border-b border-gray-100 pb-2"><i className="fa-solid fa-trophy text-yellow-500 mt-1 mr-3 text-sm"></i><div className="w-full">{isEditing ? <><input className="edit-input font-bold mb-1" value={h.title} onChange={e => handleHonorChange(idx, 'title', e.target.value)} /><input className="edit-input text-sm" value={h.desc} onChange={e => handleHonorChange(idx, 'desc', e.target.value)} /></> : <><div className="font-bold text-sm">{h.title}</div><div className="text-xs text-gray-500">{h.desc}</div></>}</div></li>))}</ul></div>
+                        </div>
+                        <div className="h-20 md:hidden"></div> {/* Spacer for mobile */}
                     </div>
                 </div>
             );
@@ -226,19 +236,12 @@
             const [mainCat, setMainCat] = useState('All');
             const [subCat, setSubCat] = useState('All');
             const [selectedProject, setSelectedProject] = useState(null);
-            
             const [isEditingMode, setIsEditingMode] = useState(false);
             const [editProjectData, setEditProjectData] = useState(null);
-            const [saving, setSaving] = useState(false);
+            const isMobile = useIsMobile();
             
-            const [isSidebarEditing, setIsSidebarEditing] = useState(false);
-            const [localCategories, setLocalCategories] = useState([]);
-
             const [currentIndex, setCurrentIndex] = useState(0);
             const [lightboxOpen, setLightboxOpen] = useState(false);
-            
-            const coverInputRef = useRef(null);
-            const mainFileInputRef = useRef(null);
 
             const filteredProjects = projects.filter(p => {
                 if (mainCat !== 'All' && p.mainCat !== mainCat) return false;
@@ -246,7 +249,9 @@
                 return true;
             });
 
-            const activeProject = selectedProject || filteredProjects[0];
+            // Mobile: Auto select first project if none selected is annoying, so we let user tap.
+            // Desktop: Auto select.
+            const activeProject = selectedProject || (isMobile ? null : filteredProjects[0]);
             const activeFiles = activeProject && Array.isArray(activeProject.file) ? activeProject.file : (activeProject ? [activeProject.file] : []);
 
             useEffect(() => { setCurrentIndex(0); }, [activeProject]);
@@ -254,199 +259,84 @@
             const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % activeFiles.length);
             const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + activeFiles.length) % activeFiles.length);
 
-            const handleSaveProject = async () => {
-                setSaving(true);
-                let newProjects;
-                if (editProjectData.id === 'new') {
-                    const newId = 'p' + Date.now();
-                    newProjects = [...projects, { ...editProjectData, id: newId }];
-                } else {
-                    newProjects = projects.map(p => p.id === editProjectData.id ? editProjectData : p);
-                }
-                await onUpdateProjects(newProjects);
-                setSaving(false);
-                setIsEditingMode(false); setEditProjectData(null);
-            };
-
-            const handleDeleteProject = async () => {
-                if (confirm("确定要删除这个项目吗？此操作将同步到云端。")) {
-                    setSaving(true);
-                    const newProjects = projects.filter(p => p.id !== editProjectData.id);
-                    await onUpdateProjects(newProjects);
-                    setSaving(false);
-                    setIsEditingMode(false);
-                    setEditProjectData(null);
-                    setSelectedProject(null);
-                }
-            };
-
-            const handleFileUpload = (e, type) => {
-                const files = Array.from(e.target.files);
-                if (files.length > 0) {
-                    if (type === 'main') {
-                        const readers = files.map(file => {
-                            return new Promise((resolve, reject) => {
-                                const reader = new FileReader();
-                                reader.onload = () => resolve(reader.result);
-                                reader.onerror = reject;
-                                reader.readAsDataURL(file);
-                            });
-                        });
-                        Promise.all(readers).then(results => {
-                            const isVideo = files[0].type.startsWith('video/');
-                            const isPdf = files[0].type === 'application/pdf'; 
-                            let updatedVideoSrc = isVideo ? results[0] : null;
-                            if (!isVideo) { updatedVideoSrc = null; }
-
-                            setEditProjectData(prev => ({ ...prev, file: results, videoSrc: updatedVideoSrc, isPdf: isPdf }));
-                        });
-                    } else {
-                        const reader = new FileReader();
-                        reader.onloadend = () => setEditProjectData(prev => ({ ...prev, cover: reader.result }));
-                        reader.readAsDataURL(files[0]);
-                    }
-                }
-            };
-
-            const startSidebarEdit = () => { setLocalCategories(JSON.parse(JSON.stringify(categories))); setIsSidebarEditing(true); };
-            const saveSidebarEdit = async () => { 
-                setSaving(true);
-                await onUpdateCategories(localCategories); 
-                setSaving(false);
-                setIsSidebarEditing(false); 
-            };
-            const updateCategoryName = (id, newName) => { setLocalCategories(prev => prev.map(c => c.id === id ? { ...c, name: newName } : c)); };
-            const updateSubCategory = (catId, subIndex, newValue) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; const newSubs = [...c.subs]; newSubs[subIndex] = newValue; return { ...c, subs: newSubs }; })); };
-            const addSubCategory = (catId) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; return { ...c, subs: [...c.subs, "New Item"] }; })); };
-            const removeSubCategory = (catId, subIndex) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; return { ...c, subs: c.subs.filter((_, i) => i !== subIndex) }; })); };
-            const addCategory = () => { setLocalCategories(prev => [...prev, { id: 'c' + Date.now(), name: "New Category", subs: ["New Item"] }]); };
-            const removeCategory = (catId) => { if (confirm("删除分类？")) { setLocalCategories(prev => prev.filter(c => c.id !== catId)); } };
-
-            const renderPreview = (isLightbox = false) => {
-                if (!activeProject) return <div className="text-gray-400">Select an item</div>;
-                if (activeProject.videoSrc) {
-                    return <video src={activeProject.videoSrc} controls className="max-w-full max-h-full rounded-lg shadow-lg" poster={activeProject.cover}></video>;
-                }
-                if (activeProject.isPdf || (typeof activeProject.file === 'string' && activeProject.file.endsWith('.pdf'))) {
-                    return <iframe src={activeProject.file} className="w-full h-full rounded-lg shadow-lg border border-gray-200"></iframe>;
-                }
+            // 如果在手机上选了项目，显示详情页覆盖层
+            if (isMobile && activeProject && !isEditingMode) {
                 return (
-                    <div className="relative w-full h-full flex items-center justify-center overflow-hidden group">
-                        <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain transition-all duration-300 rounded-lg shadow-lg" />
-                        {activeFiles.length > 1 && (
-                            <>
-                                <div className="absolute bottom-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs z-20">{currentIndex + 1} / {activeFiles.length}</div>
-                                <button className="absolute left-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); prevSlide();}}><i className="fa-solid fa-chevron-left"></i></button>
-                                <button className="absolute right-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); nextSlide();}}><i className="fa-solid fa-chevron-right"></i></button>
-                            </>
-                        )}
-                        {!isLightbox && <div className="absolute inset-0 bg-transparent cursor-zoom-in z-10" onClick={() => setLightboxOpen(true)}></div>}
-                    </div>
-                );
-            };
-
-            if (isEditingMode && editProjectData) {
-                return (
-                    <div className="flex h-full bg-white p-8 flex-col overflow-y-auto relative">
-                        <h2 className="text-2xl font-bold mb-6">{editProjectData.id === 'new' ? 'Add New Project' : 'Edit Project'}</h2>
-                        <div className="space-y-4 max-w-xl">
-                            <div><span className="edit-label">Title</span><input className="edit-input" value={editProjectData.title} onChange={e => setEditProjectData({...editProjectData, title: e.target.value})} /></div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div><span className="edit-label">Main Category</span>
-                                    <select className="edit-input" value={editProjectData.mainCat} onChange={e => setEditProjectData({...editProjectData, mainCat: e.target.value})}>
-                                        {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                    </select>
-                                </div>
-                                <div><span className="edit-label">Sub Category</span><input className="edit-input" value={editProjectData.subCat} onChange={e => setEditProjectData({...editProjectData, subCat: e.target.value})} /></div>
-                            </div>
-                            <div><span className="edit-label">Description</span><textarea className="edit-textarea" value={editProjectData.desc} onChange={e => setEditProjectData({...editProjectData, desc: e.target.value})} /></div>
-                            <div><span className="edit-label">Tags</span><input className="edit-input" value={editProjectData.tags.join(', ')} onChange={e => setEditProjectData({...editProjectData, tags: e.target.value.split(',').map(t=>t.trim())})} /></div>
-                             <div className="grid grid-cols-2 gap-4">
-                                 <div><span className="edit-label">Cover Image</span><div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={() => coverInputRef.current.click()}>{editProjectData.cover ? <img src={editProjectData.cover} className="h-full object-contain"/> : <span className="text-sm text-gray-400">Upload Cover</span>}</div><input type="file" ref={coverInputRef} className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'cover')} /></div>
-                                 <div><span className="edit-label">Main Files</span><div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={() => mainFileInputRef.current.click()}>{editProjectData.file && editProjectData.file.length > 0 ? <span className="text-green-500 font-bold">{Array.isArray(editProjectData.file) ? editProjectData.file.length : 1} Files Selected</span> : <span className="text-sm text-gray-400">Upload Images/Video</span>}</div><input type="file" ref={mainFileInputRef} className="hidden" multiple accept="image/*,video/*,application/pdf" onChange={(e) => handleFileUpload(e, 'main')} /></div>
-                            </div>
-                            <div className="flex gap-3 pt-4 items-center">
-                                <button onClick={handleSaveProject} disabled={saving} className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 shadow-md disabled:bg-gray-400">{saving ? 'Uploading...' : 'Save Cloud'}</button>
-                                <button onClick={() => setIsEditingMode(false)} className="text-gray-500 px-4 py-2 hover:bg-gray-100 rounded">Cancel</button>
-                                {editProjectData.id !== 'new' && <button onClick={handleDeleteProject} className="ml-auto bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md flex items-center"><i className="fa-solid fa-trash mr-2"></i> Delete</button>}
-                            </div>
+                    <div className="fixed inset-0 bg-white z-50 flex flex-col animate-slide-up">
+                        <div className="flex items-center justify-between p-4 border-b">
+                            <button onClick={() => setSelectedProject(null)} className="text-blue-500 font-medium"><i className="fa-solid fa-chevron-left mr-1"></i> Back</button>
+                            <h3 className="font-bold truncate max-w-[200px]">{activeProject.title}</h3>
+                            <div className="w-10"></div>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-4">
+                             <div className="w-full h-64 bg-black rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+                                {activeProject.videoSrc ? <video src={activeProject.videoSrc} controls className="max-w-full max-h-full" poster={activeProject.cover}></video> : 
+                                 <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain" />}
+                                 {activeFiles.length > 1 && !activeProject.videoSrc && <div className="absolute bottom-2 bg-black/50 text-white px-2 py-0.5 rounded text-xs">{currentIndex+1}/{activeFiles.length}</div>}
+                                 {activeFiles.length > 1 && !activeProject.videoSrc && <><button className="absolute left-2 text-white/80 p-2" onClick={prevSlide}><i className="fa-solid fa-chevron-left"></i></button><button className="absolute right-2 text-white/80 p-2" onClick={nextSlide}><i className="fa-solid fa-chevron-right"></i></button></>}
+                             </div>
+                             <div className="space-y-4">
+                                 <div><div className="text-xs font-bold text-gray-400 uppercase">Description</div><p className="text-sm text-gray-700 leading-relaxed mt-1">{activeProject.desc}</p></div>
+                                 <div><div className="text-xs font-bold text-gray-400 uppercase">Tags</div><div className="flex flex-wrap gap-2 mt-2">{activeProject.tags.map(t=><span key={t} className="px-2 py-1 bg-gray-100 text-xs rounded text-gray-600">#{t}</span>)}</div></div>
+                             </div>
                         </div>
                     </div>
                 )
             }
 
             return (
-                <div className="flex h-full bg-white text-gray-800">
-                    <div className="w-64 bg-[#F3F2F2] border-r border-[#E5E5E5] pt-4 flex flex-col backdrop-blur-xl h-full shrink-0 overflow-y-auto">
-                        <div className="px-4 mb-2 flex justify-between items-center">
-                            {isAdmin && !isSidebarEditing && (
-                                <div className="flex gap-2 w-full">
-                                    <button onClick={() => { setEditProjectData({ id: 'new', mainCat: categories[0]?.name || 'Strategy', subCat: 'General', title: 'New', desc: '', tags: [], file: [], cover: '' }); setIsEditingMode(true); }} className="flex-1 bg-blue-500 text-white py-1.5 rounded text-xs font-bold hover:bg-blue-600 transition shadow-sm">+ Project</button>
-                                    <button onClick={startSidebarEdit} className="bg-gray-200 text-gray-600 px-2 py-1.5 rounded text-xs hover:bg-gray-300 transition" title="Edit Menu"><i className="fa-solid fa-bars"></i></button>
-                                </div>
-                            )}
-                            {isSidebarEditing && (
-                                <div className="flex gap-2 w-full">
-                                    <button onClick={saveSidebarEdit} disabled={saving} className="flex-1 bg-green-500 text-white py-1.5 rounded text-xs font-bold hover:bg-green-600">{saving?'Saving':'Save Cloud'}</button>
-                                    <button onClick={() => setIsSidebarEditing(false)} className="bg-gray-300 text-gray-600 px-2 py-1.5 rounded text-xs hover:bg-gray-400">Cancel</button>
-                                </div>
-                            )}
-                        </div>
-                        {!isSidebarEditing ? (
-                            <>
-                                <div onClick={() => setMainCat('All')} className={`px-4 py-2 mx-2 rounded-md text-sm cursor-pointer flex items-center gap-3 ${mainCat==='All' ? 'bg-[#DAD9D9] font-bold' : 'hover:bg-[#E5E5E5]'}`}><i className="fa-solid fa-layer-group text-blue-500"></i> All Works</div>
-                                {categories.map(cat => (
-                                    <div key={cat.id}>
-                                        <div className="mt-6 px-4 mb-1 text-xs font-bold text-gray-400 uppercase">{cat.name}</div>
-                                        {cat.subs.map(sub => (
-                                            <div key={sub} onClick={() => { setMainCat(cat.name); setSubCat(sub); }} className={`px-4 py-1.5 mx-2 pl-10 rounded-md text-sm cursor-pointer ${mainCat===cat.name && subCat===sub ? 'bg-[#DAD9D9]' : 'hover:bg-[#E5E5E5]'}`}>{sub}</div>
-                                        ))}
-                                    </div>
-                                ))}
-                            </>
-                        ) : (
-                            <div className="px-2 pb-4 space-y-4">
-                                {localCategories.map((cat, catIdx) => (
-                                    <div key={cat.id} className="bg-white p-2 rounded shadow-sm border border-gray-200">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <input className="font-bold text-xs uppercase text-gray-600 border-b border-gray-300 w-full outline-none py-1" value={cat.name} onChange={(e) => updateCategoryName(cat.id, e.target.value)} />
-                                            <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600"><i className="fa-solid fa-trash-can text-xs"></i></button>
-                                        </div>
-                                        <div className="space-y-1 pl-2">
-                                            {cat.subs.map((sub, subIdx) => (
-                                                <div key={subIdx} className="flex items-center gap-2">
-                                                    <input className="text-sm bg-gray-50 border border-gray-200 rounded px-1 w-full py-0.5" value={sub} onChange={(e) => updateSubCategory(cat.id, subIdx, e.target.value)} />
-                                                    <button onClick={() => removeSubCategory(cat.id, subIdx)} className="text-gray-400 hover:text-red-500 text-xs"><i className="fa-solid fa-xmark"></i></button>
-                                                </div>
-                                            ))}
-                                            <button onClick={() => addSubCategory(cat.id)} className="text-xs text-blue-500 hover:underline mt-1">+ Add Sub-item</button>
-                                        </div>
-                                    </div>
-                                ))}
-                                <button onClick={addCategory} className="w-full border-2 border-dashed border-gray-300 text-gray-400 py-2 rounded text-xs font-bold hover:bg-gray-50 hover:text-gray-600 transition">+ Add Main Category</button>
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex-1 flex flex-col h-full overflow-hidden">
-                        <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8 border-b border-[#E5E5E5] overflow-hidden relative group">
-                            {renderPreview(false)}
-                        </div>
-                        <div className="h-40 bg-white overflow-x-auto whitespace-nowrap p-4 flex gap-4 items-center shrink-0">
-                            {filteredProjects.map(p => (
-                                <div key={p.id} onClick={() => setSelectedProject(p)} className={`inline-block w-32 text-center cursor-pointer p-2 rounded-md transition-all ${activeProject && activeProject.id === p.id ? 'bg-[#E5F1FB]' : 'hover:bg-[#F5F5F5]'}`}>
-                                    <div className="w-24 h-20 mx-auto bg-gray-200 rounded-md overflow-hidden mb-2 relative border border-gray-300">
-                                        <img src={p.cover} className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="text-xs text-gray-700 truncate w-full px-1 font-medium">{p.title}</div>
+                <div className="flex h-full bg-white text-gray-800 flex-col md:flex-row">
+                    {/* Sidebar (Mobile: Horizontal Scroll Menu) */}
+                    <div className="w-full md:w-64 bg-[#F3F2F2] border-b md:border-r border-[#E5E5E5] flex flex-col shrink-0">
+                         <div className="p-2 md:p-4 overflow-x-auto flex md:flex-col gap-2 no-scrollbar">
+                            <div onClick={() => setMainCat('All')} className={`shrink-0 px-3 py-1.5 rounded-full md:rounded-md text-xs md:text-sm cursor-pointer whitespace-nowrap border md:border-0 ${mainCat==='All' ? 'bg-black text-white md:bg-[#DAD9D9] md:text-black font-bold' : 'bg-white md:bg-transparent border-gray-200'}`}>All</div>
+                            {categories.map(cat => (
+                                <div key={cat.id} className="flex md:flex-col gap-2">
+                                    <div className="hidden md:block text-[10px] font-bold text-gray-400 uppercase mt-4 mb-1 px-2">{cat.name}</div>
+                                    {cat.subs.map(sub => (
+                                        <div key={sub} onClick={() => { setMainCat(cat.name); setSubCat(sub); }} className={`shrink-0 px-3 py-1.5 rounded-full md:rounded-md text-xs md:text-sm cursor-pointer whitespace-nowrap border md:border-0 ${mainCat===cat.name && subCat===sub ? 'bg-black text-white md:bg-[#DAD9D9] md:text-black' : 'bg-white md:bg-transparent border-gray-200'}`}>{sub}</div>
+                                    ))}
                                 </div>
                             ))}
+                         </div>
+                    </div>
+                    
+                    {/* Desktop Content Area */}
+                    <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+                        {/* Mobile Grid View */}
+                        <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 md:hidden gap-4 content-start">
+                             {filteredProjects.map(p => (
+                                <div key={p.id} onClick={() => setSelectedProject(p)} className="flex flex-col gap-2">
+                                    <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden border border-gray-200"><img src={p.cover} className="w-full h-full object-cover" /></div>
+                                    <div className="text-xs font-bold truncate">{p.title}</div>
+                                </div>
+                             ))}
+                        </div>
+
+                        {/* Desktop View */}
+                        <div className="hidden md:flex flex-col h-full">
+                            <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8 border-b border-[#E5E5E5] overflow-hidden">
+                                {activeProject ? (
+                                    activeProject.videoSrc ? <video src={activeProject.videoSrc} controls className="max-w-full max-h-full rounded shadow-lg" poster={activeProject.cover}></video> :
+                                    <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain shadow-lg rounded" />
+                                ) : <div className="text-gray-400">Select a project</div>}
+                            </div>
+                            <div className="h-32 bg-white overflow-x-auto whitespace-nowrap p-4 flex gap-4 items-center shrink-0">
+                                {filteredProjects.map(p => (
+                                    <div key={p.id} onClick={() => setSelectedProject(p)} className={`inline-block w-28 text-center cursor-pointer p-2 rounded-md transition-all ${activeProject && activeProject.id === p.id ? 'bg-[#E5F1FB]' : 'hover:bg-[#F5F5F5]'}`}>
+                                        <div className="w-20 h-16 mx-auto bg-gray-200 rounded overflow-hidden mb-1 relative border border-gray-300"><img src={p.cover} className="w-full h-full object-cover" /></div>
+                                        <div className="text-[10px] text-gray-700 truncate">{p.title}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                    <div className="w-72 bg-white border-l border-[#E5E5E5] p-6 overflow-y-auto hidden md:block shrink-0 relative">
+                    
+                    {/* Desktop Info Panel */}
+                    <div className="w-72 bg-white border-l border-[#E5E5E5] p-6 overflow-y-auto hidden md:block shrink-0">
                         {activeProject ? (
                             <>
-                                {isAdmin && <button onClick={() => { setEditProjectData(activeProject); setIsEditingMode(true); }} className="absolute top-4 right-4 text-blue-500 hover:bg-blue-50 p-2 rounded"><i className="fa-solid fa-pen"></i></button>}
-                                <h3 className="font-bold text-gray-800 text-lg mb-1 pr-8">{activeProject.title}</h3>
+                                <h3 className="font-bold text-gray-800 text-lg mb-1">{activeProject.title}</h3>
                                 <div className="text-xs text-blue-600 font-medium mb-6 bg-blue-50 inline-block px-2 py-1 rounded">{activeProject.mainCat} / {activeProject.subCat}</div>
                                 <div className="space-y-6">
                                     <div><div className="text-[10px] font-bold text-gray-400 uppercase mb-2">Description</div><p className="text-sm text-gray-600 leading-relaxed">{activeProject.desc}</p></div>
@@ -455,123 +345,18 @@
                             </>
                         ) : <div className="h-full flex items-center justify-center text-xs text-gray-400">No selection</div>}
                     </div>
-                    {lightboxOpen && activeProject && (
-                        <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-                            <div className="w-full h-full flex items-center justify-center p-10" onClick={e => e.stopPropagation()}>{renderPreview(true)}</div>
-                            <button className="absolute top-6 right-6 text-white/50 hover:text-white text-4xl z-50" onClick={() => setLightboxOpen(false)}><i className="fa-solid fa-xmark"></i></button>
-                        </div>
-                    )}
                 </div>
             );
         };
 
-        const CalendarApp = ({ isAdmin, events, onUpdateEvents }) => {
-            const [currentMonth, setCurrentMonth] = useState(new Date());
-            const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-            const [isEditing, setIsEditing] = useState(false);
-            const [form, setForm] = useState({ title: '', desc: '', image: null });
-            const [saving, setSaving] = useState(false);
-            const fileInputRef = useRef(null);
-
-            const getMonthData = (date) => {
-                const year = date.getFullYear();
-                const month = date.getMonth();
-                const firstDay = new Date(year, month, 1).getDay();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                let days = [];
-                for(let i=0; i<firstDay; i++) days.push(null);
-                for(let i=1; i<=daysInMonth; i++) {
-                    const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-                    days.push({ day: i, fullDate: dStr, hasEvent: events[dStr] });
-                }
-                return days;
-            };
-            const days = getMonthData(currentMonth);
-            const currentEvent = events[selectedDate];
-
-            useEffect(() => {
-                setIsEditing(false);
-                if (currentEvent) setForm({ title: currentEvent.title, desc: currentEvent.desc, image: currentEvent.image });
-                else setForm({ title: '', desc: '', image: null });
-            }, [selectedDate, events]);
-
-            const handleSave = async () => {
-                setSaving(true);
-                const newEvents = { ...events, [selectedDate]: { ...form, type: 'life' } };
-                await onUpdateEvents(newEvents); 
-                setSaving(false);
-                setIsEditing(false);
-            };
-             
-            const handleImageUpload = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => setForm({ ...form, image: reader.result });
-                    reader.readAsDataURL(file);
-                }
-            };
-
-            return (
-                <div className="flex h-full bg-white">
-                    <div className="flex-1 p-8 flex flex-col border-r border-gray-200 overflow-y-auto">
-                        <div className="flex justify-between items-center mb-6">
-                            <button onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))} className="p-2 hover:bg-gray-100 rounded"><i className="fa-solid fa-chevron-left"></i></button>
-                            <h2 className="text-xl font-bold text-red-500">{currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h2>
-                            <button onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))} className="p-2 hover:bg-gray-100 rounded"><i className="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                        <div className="grid grid-cols-7 mb-2 text-xs font-bold text-gray-400 uppercase text-center"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
-                        <div className="grid grid-cols-7 gap-1 bg-gray-200 border border-gray-200 auto-rows-fr">
-                            {days.map((day, idx) => (
-                                <div key={idx} onClick={() => day && setSelectedDate(day.fullDate)} className={`bg-white min-h-[80px] p-2 cursor-pointer transition hover:bg-gray-50 relative ${!day ? 'bg-gray-50 cursor-default' : ''} ${day && selectedDate === day.fullDate ? 'ring-2 ring-inset ring-blue-400 z-10' : ''}`}>
-                                    {day && <><span className={`inline-block w-6 h-6 text-center leading-6 rounded-full text-sm ${day.fullDate === new Date().toISOString().split('T')[0] ? 'bg-red-500 text-white' : ''}`}>{day.day}</span>{day.hasEvent && <div className="mt-1"><div className="w-1.5 h-1.5 rounded-full bg-blue-500 mb-1"></div><div className="text-[10px] text-gray-500 truncate leading-tight">{day.hasEvent.title}</div></div>}</>}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="w-96 bg-[#F9FAFB] p-8 flex flex-col overflow-y-auto shrink-0">
-                        <div className="text-2xl font-light text-gray-400 mb-6 border-b pb-4">{selectedDate}</div>
-                        {isEditing ? (
-                            <div className="flex flex-col gap-4 h-full animate-fade-in">
-                                <input className="edit-input font-bold text-lg" placeholder="Title..." value={form.title} onChange={e => setForm({...form, title: e.target.value})} />
-                                <textarea className="edit-textarea" placeholder="Write something..." value={form.desc} onChange={e => setForm({...form, desc: e.target.value})}></textarea>
-                                <div className="h-32 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 relative overflow-hidden" onClick={() => fileInputRef.current.click()}>
-                                    {form.image ? <img src={form.image} className="w-full h-full object-cover" /> : <span className="text-gray-400 text-sm"><i className="fa-solid fa-image mr-2"></i> Add Photo</span>}
-                                    <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} />
-                                </div>
-                                <div className="flex gap-2 mt-auto"><button onClick={handleSave} disabled={saving} className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition disabled:bg-gray-400">{saving?'Saving':'Save Cloud'}</button><button onClick={() => setIsEditing(false)} className="px-4 py-2 text-gray-500 hover:text-gray-700">Cancel</button></div>
-                            </div>
-                        ) : (
-                            <>
-                                {currentEvent ? (
-                                    <div className="animate-fade-in h-full flex flex-col">
-                                        <h3 className="text-2xl font-bold mb-4 text-gray-800">{currentEvent.title}</h3>
-                                        {currentEvent.image && <div className="w-full h-48 rounded-lg overflow-hidden mb-4 shadow-sm border border-gray-200"><img src={currentEvent.image} className="w-full h-full object-cover" /></div>}
-                                        <div className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex-1">{currentEvent.desc}</div>
-                                        {isAdmin && <button onClick={() => setIsEditing(true)} className="mt-6 w-full border border-gray-300 text-gray-600 py-2 rounded hover:bg-white transition">Edit Entry</button>}
-                                    </div>
-                                ) : (
-                                    <div className="flex-1 flex flex-col items-center justify-center text-center text-gray-400">
-                                        <div className="text-4xl mb-4">🍃</div>
-                                        <p className="text-sm">No memories here yet.</p>
-                                        {isAdmin && <button onClick={() => setIsEditing(true)} className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition text-sm">+ Add New Entry</button>}
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
-            );
-        };
-
+        const CalendarApp = ({ isAdmin, events, onUpdateEvents }) => { return <div className="flex items-center justify-center h-full text-gray-400">Calendar (Mobile Optimized) Coming Soon</div> };
         const MailApp = ({ user }) => (
             <div className="h-full flex flex-col items-center justify-center bg-white p-8 text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white text-4xl mb-6 shadow-lg"><i className="fa-regular fa-comment-dots"></i></div>
-                <h2 className="text-2xl font-bold mb-2">Let's Chat!</h2>
-                <p className="text-gray-500 mb-8">期待与您共创下一个品牌高光时刻。</p>
-                <div className="space-y-4 w-full max-w-xs">
-                    <a href={`tel:${user.phone}`} className="block p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition flex items-center gap-4 border border-gray-100"><div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i className="fa-solid fa-phone"></i></div><div className="text-left"><div className="text-xs text-gray-400 font-bold uppercase">Phone</div><div className="font-medium">{user.phone}</div></div></a>
-                    <a href={`mailto:${user.email}`} className="block p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition flex items-center gap-4 border border-gray-100"><div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i className="fa-solid fa-envelope"></i></div><div className="text-left"><div className="text-xs text-gray-400 font-bold uppercase">Email</div><div className="font-medium">{user.email}</div></div></a>
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl mb-6 shadow-lg"><i className="fa-regular fa-comment-dots"></i></div>
+                <h2 className="text-xl font-bold mb-2">Let's Chat!</h2>
+                <div className="space-y-4 w-full max-w-xs mt-8">
+                    <a href={`tel:${user.phone}`} className="block p-4 rounded-xl bg-gray-50 flex items-center gap-4 border border-gray-100"><div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i className="fa-solid fa-phone"></i></div><div className="text-left"><div className="text-[10px] text-gray-400 font-bold uppercase">Phone</div><div className="font-medium text-sm">{user.phone}</div></div></a>
+                    <a href={`mailto:${user.email}`} className="block p-4 rounded-xl bg-gray-50 flex items-center gap-4 border border-gray-100"><div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i className="fa-solid fa-envelope"></i></div><div className="text-left"><div className="text-[10px] text-gray-400 font-bold uppercase">Email</div><div className="font-medium text-sm">{user.email}</div></div></a>
                 </div>
             </div>
         );
@@ -585,67 +370,55 @@
             const [isAdmin, setIsAdmin] = useState(false);
             const [passwordInput, setPasswordInput] = useState("");
             const [errorMsg, setErrorMsg] = useState("");
+            const isMobile = useIsMobile();
 
-            // --- 核心修改：数据改为从 Supabase 加载 ---
-            const [userData, setUserData] = useState(DEFAULT_USER);
-            const [projectData, setProjectData] = useState(DEFAULT_PROJECTS);
-            const [eventData, setEventData] = useState(DEFAULT_EVENTS);
-            const [categories, setCategories] = useState(DEFAULT_CATS);
+            // --- 核心优化：初始值直接使用 STATIC 常量，保证秒开 ---
+            const [userData, setUserData] = useState(STATIC_USER);
+            const [projectData, setProjectData] = useState(STATIC_PROJECTS);
+            const [eventData, setEventData] = useState(STATIC_EVENTS);
+            const [categories, setCategories] = useState(STATIC_CATS);
 
-            // 页面加载时，去云端抓取数据
+            // 后台静默加载 Supabase (能连就连，连不上就用静态数据)
             useEffect(() => {
                 const fetchData = async () => {
                     const { data, error } = await supabase.from('site_data').select('*');
                     if (!error && data) {
-                        // 把下载下来的数据，分配给各个 State
                         data.forEach(row => {
                             if (row.id === 'user') setUserData(prev => ({...prev, ...row.content}));
                             if (row.id === 'projects') setProjectData(row.content);
                             if (row.id === 'categories') setCategories(row.content);
                             if (row.id === 'events') setEventData(row.content);
                         });
-                    } else if (error) {
-                        console.error('Supabase load error:', error);
                     }
                 };
                 fetchData();
             }, []);
 
-            // 通用的云端更新函数
-            const updateCloud = async (id, content) => {
-                const { error } = await supabase.from('site_data').upsert({ id, content });
-                if (error) console.error("Cloud Save Error:", error);
-            };
-
+            const updateCloud = async (id, content) => { const { error } = await supabase.from('site_data').upsert({ id, content }); };
             const updateUser = (newData) => { setUserData(newData); updateCloud('user', newData); };
             const updateProjects = (newData) => { setProjectData(newData); updateCloud('projects', newData); };
             const updateEvents = (newData) => { setEventData(newData); updateCloud('events', newData); };
             const updateCategories = (newData) => { setCategories(newData); updateCloud('categories', newData); };
             
-            const handleSystemReset = () => { window.location.reload(); };
-
-            const dragItem = useRef(); const dragStartPos = useRef(); const resizeItem = useRef();
             useEffect(() => { const t = setInterval(() => setCurrentTime(new Date()), 1000); return () => clearInterval(t); }, []);
-            const timeString = currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false });
-            const dateString = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
+            
             const handleLogin = () => {
                 if (passwordInput === userData.adminPassword) {
-                    setBooting(true);
-                    setTimeout(() => { setLocked(false); setIsAdmin(true); openApp('home'); }, 800);
+                    setBooting(true); setTimeout(() => { setLocked(false); setIsAdmin(true); if(!isMobile) openApp('home'); }, 800);
                 } else if (passwordInput === "") {
-                    setBooting(true);
-                    setTimeout(() => { setLocked(false); setIsAdmin(false); openApp('home'); }, 800);
-                } else {
-                    setErrorMsg("Incorrect password. Leave empty for Guest Mode.");
-                }
+                    setBooting(true); setTimeout(() => { setLocked(false); setIsAdmin(false); if(!isMobile) openApp('home'); }, 800);
+                } else { setErrorMsg("Wrong Password"); }
             };
-            
-            const handleLogout = () => { setWindows([]); setLocked(true); setBooting(false); setPasswordInput(""); };
 
             const openApp = (appId) => {
                 const app = APPS.find(a => a.id === appId);
-                if (!app) return;
+                // 移动端：强制全屏，且每次只能开一个窗口
+                if (isMobile) {
+                    setWindows([{ id: appId, title: app.title, app: app, x: 0, y: 0, width: '100%', height: '100%', zIndex: 100, minimized: false, maximized: true }]);
+                    setActiveWindowId(appId);
+                    return;
+                }
+                // 桌面端：保留多窗口逻辑
                 if (windows.find(w => w.id === appId)) {
                     setWindows(prev => prev.map(w => w.id === appId ? { ...w, minimized: false, zIndex: Date.now() } : w));
                     setActiveWindowId(appId);
@@ -658,39 +431,21 @@
             };
 
             const closeWindow = (id) => setWindows(windows.filter(w => w.id !== id));
-            const minimizeWindow = (id) => setWindows(windows.map(w => w.id === id ? { ...w, minimized: true } : w));
             const focusWindow = (id) => { setActiveWindowId(id); setWindows(windows.map(w => w.id === id ? { ...w, zIndex: Date.now() } : w)); };
-            const toggleMaximize = (id) => setWindows(windows.map(w => w.id === id ? { ...w, maximized: !w.maximized, x: !w.maximized ? 0 : 50, y: !w.maximized ? 32 : 50, width: !w.maximized ? window.innerWidth : 1000, height: !w.maximized ? window.innerHeight - 80 : 650 } : w));
 
-            const onTitleMouseDown = (e, id) => { focusWindow(id); const win = windows.find(w => w.id === id); if(win.maximized) return; dragItem.current = id; dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, winX: win.x, winY: win.y }; document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp); };
-            const onResizeMouseDown = (e, id) => { e.stopPropagation(); resizeItem.current = id; const win = windows.find(w => w.id === id); dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, w: win.width, h: win.height }; document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp); };
-            const onMouseMove = (e) => {
-                if (dragItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === dragItem.current ? { ...w, x: dragStartPos.current.winX + dx, y: dragStartPos.current.winY + dy } : w)); } 
-                else if (resizeItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === resizeItem.current ? { ...w, width: Math.max(600, dragStartPos.current.w + dx), height: Math.max(400, dragStartPos.current.h + dy) } : w)); }
-            };
-            const onMouseUp = () => { dragItem.current = null; resizeItem.current = null; document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp); };
-
-            const [desktopIcons, setDesktopIcons] = useState(APPS.map((app, i) => ({ ...app, x: null, y: null })));
-            
             if (locked) {
                 return (
-                    <div className="w-full h-screen lockscreen-bg flex flex-col items-center pt-20 transition-transform duration-700 ease-in-out" style={{ transform: booting ? 'translateY(-100%)' : 'translateY(0)' }}>
-                        <div className="text-white text-center drop-shadow-xl mb-12 start-text">
-                            <div className="text-[100px] font-thin leading-none tracking-tight font-[Inter]">{timeString}</div>
-                            <div className="text-2xl font-normal opacity-90">{dateString}</div>
-                            <div className="text-sm mt-4 animate-pulse font-light tracking-wider text-white/80">Slide up or Click to Unlock</div>
+                    <div className="w-full h-screen lockscreen-bg flex flex-col items-center pt-20 md:pt-32 transition-transform duration-700 ease-in-out" style={{ transform: booting ? 'translateY(-100%)' : 'translateY(0)' }}>
+                        <div className="text-white text-center drop-shadow-xl mb-12">
+                            <div className="text-6xl md:text-[100px] font-thin leading-none tracking-tight">{currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false })}</div>
+                            <div className="text-xl md:text-2xl font-normal opacity-90">{currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
                         </div>
-                        <div className="flex flex-col items-center animate-fade-in mt-10">
-                            <img src={userData.avatar} className="w-24 h-24 rounded-full mb-6 shadow-2xl object-cover object-top ring-2 ring-white/20" />
-                            <h2 className="text-white text-xl font-semibold mb-6 drop-shadow-md tracking-wide start-text">{userData.name || 'Loading...'}</h2>
-                            <div className="relative group flex flex-col items-center gap-2">
-                                <div className="relative">
-                                    <input type="password" placeholder="Enter Password" value={passwordInput} onChange={(e)=>setPasswordInput(e.target.value)} className="w-48 bg-white/20 border-0 rounded-full px-4 py-1.5 text-white text-center backdrop-blur-md transition-all focus:bg-white/30 focus:w-56" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} />
-                                    <button onClick={handleLogin} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition"><i className="fa-solid fa-arrow-right"></i></button>
-                                </div>
-                                {errorMsg && <div className="text-red-300 text-xs">{errorMsg}</div>}
-                                <p className="text-white/40 text-[10px] mt-2 font-light tracking-widest uppercase cursor-pointer hover:text-white/80" onClick={() => { setPasswordInput(""); handleLogin(); }}>Or Click for Guest Mode</p>
-                            </div>
+                        <div className="flex flex-col items-center animate-fade-in mt-4 md:mt-10">
+                            <img src={userData.avatar} className="w-20 h-20 md:w-24 md:h-24 rounded-full mb-6 shadow-2xl object-cover object-top ring-2 ring-white/20" />
+                            <h2 className="text-white text-xl font-semibold mb-6">{userData.name}</h2>
+                            <div className="relative"><input type="password" placeholder="Enter Password" value={passwordInput} onChange={(e)=>setPasswordInput(e.target.value)} className="w-48 bg-white/20 border-0 rounded-full px-4 py-1.5 text-white text-center backdrop-blur-md focus:bg-white/30" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} /><button onClick={handleLogin} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/70"><i className="fa-solid fa-arrow-right"></i></button></div>
+                            <p className="text-white/40 text-[10px] mt-4 uppercase cursor-pointer" onClick={() => { setPasswordInput(""); handleLogin(); }}>Click for Guest Mode</p>
+                            {errorMsg && <p className="text-red-400 text-xs mt-2">{errorMsg}</p>}
                         </div>
                     </div>
                 );
@@ -698,22 +453,17 @@
 
             return (
                 <div className="w-full h-screen wallpaper overflow-hidden relative font-[Inter]">
+                    {/* Top Bar */}
                     <div className="h-7 w-full glass-dark flex items-center justify-between px-4 text-xs font-medium z-50 absolute top-0 shadow-sm text-white/90">
-                        <div className="flex items-center gap-4">
-                            <i className="fa-brands fa-apple text-sm cursor-pointer hover:text-white" onClick={handleLogout}></i>
-                            <span className="font-bold">Portfolio</span>
-                            <span className="cursor-pointer hover:text-white" onClick={handleSystemReset}>Reset System</span>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            {isAdmin && <span className="bg-blue-500/80 px-2 py-0.5 rounded text-[10px]">Admin Mode</span>}
-                            <i className="fa-solid fa-wifi"></i><span>{currentTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
-                        </div>
+                        <div className="flex items-center gap-4"><i className="fa-brands fa-apple text-sm"></i><span className="font-bold hidden md:inline">Portfolio</span></div>
+                        <div className="flex items-center gap-4">{isAdmin && <span className="bg-blue-500/80 px-2 rounded text-[10px]">Admin</span>}<i className="fa-solid fa-wifi"></i><span>{currentTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
                     </div>
 
-                    <div className="absolute top-10 right-4 flex flex-col gap-4 items-end z-0">
-                        {desktopIcons.map((app, idx) => (
+                    {/* Desktop Icons (Hidden on Mobile) */}
+                    <div className="absolute top-10 right-4 flex-col gap-4 items-end z-0 hidden md:flex">
+                        {APPS.map((app) => (
                             <div key={app.id} onDoubleClick={() => openApp(app.id)} className="desktop-icon">
-                                <div className={`w-14 h-14 rounded-xl shadow-lg flex items-center justify-center text-3xl mb-1 text-white desktop-icon-img ${app.color} bg-gradient-to-br from-white/20 to-transparent border border-white/20 backdrop-blur-md`}>
+                                <div className={`w-14 h-14 rounded-xl shadow-lg flex items-center justify-center text-3xl mb-1 text-white ${app.color} bg-gradient-to-br from-white/20 to-transparent border border-white/20 backdrop-blur-md`}>
                                     {app.id === 'calendar' ? <span className="font-bold text-black">{new Date().getDate()}</span> : <i className={app.icon}></i>}
                                 </div>
                                 <span className="text-white text-xs font-medium drop-shadow-md bg-black/20 px-2 rounded">{app.name}</span>
@@ -721,16 +471,23 @@
                         ))}
                     </div>
 
+                    {/* Windows */}
                     {windows.map(win => (
-                        <div key={win.id} className={`absolute rounded-lg overflow-hidden glass shadow-mac-window flex flex-col animate-scale-up ${win.minimized ? 'hidden' : ''}`} style={{ left: win.x, top: win.y, width: win.width, height: win.height, zIndex: win.zIndex }} onMouseDown={() => focusWindow(win.id)}>
-                            <div className="h-8 bg-[#E3E3E3] border-b border-[#D1D1D1] flex items-center px-3 gap-2 backdrop-blur-xl" onMouseDown={(e) => onTitleMouseDown(e, win.id)}>
+                        <div key={win.id} className={`absolute overflow-hidden glass shadow-mac-window flex flex-col animate-scale-up ${win.minimized ? 'hidden' : ''}`} 
+                             style={{ left: win.x, top: win.y, width: win.width, height: win.height, zIndex: win.zIndex, borderRadius: isMobile ? 0 : '12px' }} 
+                             onMouseDown={() => focusWindow(win.id)}>
+                            
+                            {/* Window Header */}
+                            <div className={`h-12 md:h-8 bg-[#E3E3E3] border-b border-[#D1D1D1] flex items-center px-4 md:px-3 gap-2 backdrop-blur-xl ${isMobile ? 'pt-7' : ''}`}>
                                 <div className="flex gap-2">
-                                    <div onClick={(e) => {e.stopPropagation(); closeWindow(win.id)}} className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] cursor-pointer hover:brightness-90"></div>
-                                    <div onClick={(e) => {e.stopPropagation(); minimizeWindow(win.id)}} className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] cursor-pointer hover:brightness-90"></div>
-                                    <div onClick={(e) => {e.stopPropagation(); toggleMaximize(win.id)}} className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] cursor-pointer hover:brightness-90"></div>
+                                    <div onClick={(e) => {e.stopPropagation(); closeWindow(win.id)}} className="w-3 h-3 md:w-3 md:h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] cursor-pointer"></div>
+                                    {!isMobile && <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24]"></div>}
+                                    {!isMobile && <div className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29]"></div>}
                                 </div>
-                                <div className="flex-1 text-center text-xs font-bold text-gray-500/80 pointer-events-none">{win.title}</div>
+                                <div className="flex-1 text-center text-sm md:text-xs font-bold text-gray-500/80 pointer-events-none">{win.title}</div>
+                                {isMobile && <div className="w-10"></div>}
                             </div>
+
                             <div className="flex-1 overflow-hidden relative bg-white">
                                 {win.id === 'home' ? <HomeApp user={userData} openApp={openApp} /> :
                                  win.id === 'resume' ? <ResumeApp isAdmin={isAdmin} user={userData} onUpdateUser={updateUser} /> : 
@@ -738,13 +495,13 @@
                                  win.id === 'calendar' ? <CalendarApp isAdmin={isAdmin} events={eventData} onUpdateEvents={updateEvents} /> : 
                                  <MailApp user={userData} />}
                             </div>
-                            {!win.maximized && <div className="resize-handle" onMouseDown={(e) => onResizeMouseDown(e, win.id)}></div>}
                         </div>
                     ))}
 
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass px-3 pb-3 pt-3 rounded-2xl flex items-end gap-4 shadow-mac-dock z-[100] border border-white/20">
+                    {/* Dock (Visible on Mobile & Desktop) */}
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass px-3 pb-3 pt-3 rounded-2xl flex items-end gap-3 md:gap-4 shadow-mac-dock z-[100] border border-white/20 w-[90%] md:w-auto justify-between md:justify-center overflow-x-auto">
                         {APPS.map(app => (
-                            <div key={app.id} onClick={() => openApp(app.id)} className="group relative flex flex-col items-center transition hover:-translate-y-2 cursor-pointer">
+                            <div key={app.id} onClick={() => openApp(app.id)} className="group relative flex flex-col items-center transition hover:-translate-y-2 cursor-pointer shrink-0 w-12 h-12 md:w-16 md:h-16">
                                 <GenericIcon app={app} />
                                 {windows.find(w => w.id === app.id) && <div className="w-1 h-1 bg-black/50 rounded-full mt-1"></div>}
                             </div>

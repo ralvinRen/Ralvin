@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ren Jiaxuan - Creative Portfolio</title>
     
-    <!-- React & Tailwind -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts & Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -89,56 +89,23 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- 1. 初始数据常量 ---
-        const INITIAL_USER = {
-            name: "Ren Jiaxuan",
-            avatar: "profile.jpg",
-            adminPassword: "ralvin", 
-            email: "1627716641@qq.com",
-            phone: "195 4899 4021",
-            school: "浙江师范大学 | 数字媒体艺术",
-            gpa: "3.92 (Top 3%)",
-            english: "CET-6 550+ | 雅思 6.5",
-            exchange: "延世大学 (2025 Summer)",
-            resumeFile: "任_佳煊_125515171091.pdf",
-            intro: "你好，我是任佳煊。一名追求“策创合一”的数字媒体艺术学生。我不仅擅长用画面讲故事（视频/设计），更热衷于挖掘品牌背后的策略支点。我拥有敏锐的 Z 世代洞察力，期待用灵感与逻辑为品牌创造价值。",
-            skillsStrategy: ['品牌全案', '文案策划', '创意脚本', '竞品分析', '社媒运营'],
-            skillsVisual: ['PS', 'AI', 'Premiere', 'After Effects', 'C4D', 'Midjourney', 'Figma'],
-            honors: [
-                { title: "全国一等奖", desc: "全国商科精英挑战赛会展策划赛道" },
-                { title: "全国三等奖", desc: "第17届全国大学生广告艺术大赛 (视频类)" },
-                { title: "官方参赛认证", desc: "L'Oréal Brandstorm 2025" },
-                { title: "省级一等奖", desc: "第13届浙江省大学生广告创意设计大赛" }
-            ]
+        // --- 1. Supabase 配置 (Cloud Storage) ---
+        const SUPABASE_URL = 'https://qtgimhdzhxyzukxzpnjb.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Z2ltaGR6aHh5enVreHpwbmpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNDIyNTYsImV4cCI6MjA3OTkxODI1Nn0.JU1dkBsJ1lwEY9-40fkDk0KZROfHWSZxoH18WHnjIug';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- 2. 默认空数据 (Loading State) ---
+        // 这些数据会在 React 加载时显示，直到 Supabase 的数据下载完成
+        const DEFAULT_USER = {
+            name: "Loading...", avatar: "profile.jpg", adminPassword: "ralvin", email: "", phone: "",
+            school: "", gpa: "", english: "", exchange: "", resumeFile: "",
+            intro: "正在连接云端数据库...", skillsStrategy: [], skillsVisual: [], honors: []
         };
+        const DEFAULT_CATS = [];
+        const DEFAULT_PROJECTS = [];
+        const DEFAULT_EVENTS = {};
 
-        // NEW: 初始分类数据 (Sidebar Menu)
-        const INITIAL_CATEGORIES = [
-            { id: 'cat1', name: 'Brand Strategy', subs: ['品牌全案', '视频策划', '商赛'] },
-            { id: 'cat2', name: 'Artistic Expression', subs: ['影像', '插画', '海报', '文创设计', 'AIGC'] }
-        ];
-
-        // Updated Projects to match "Brand Strategy" instead of "Strategy" for consistency
-        const INITIAL_PROJECTS = [
-            // Strategy
-            { id: 's1', mainCat: 'Brand Strategy', subCat: '品牌全案', title: "赤尾：顺滑到位", file: ["zioxx-video.mp4"], cover: "zioxx-video-cover.png", videoSrc: "zioxx-video.mp4", desc: "摒弃传统说教，用“双人舞步”隐喻亲密关系。设计“丝滑换装”转场。", tags: ["大广赛三等奖", "视频策划"] },
-            { id: 's2', mainCat: 'Brand Strategy', subCat: '商赛', title: "L'Oréal Brandstorm", file: ["L‘Orealbrainstorm video.mp4"], cover: "loreal_cover.jpg", videoSrc: "L‘Orealbrainstorm video.mp4", desc: "提出 TerraGuard 智能剃须生态系统。负责全英文 Pitch Deck。", tags: ["官方认证", "CSR策略"] },
-            { id: 's3', mainCat: 'Brand Strategy', subCat: '品牌全案', title: "赤尾品牌手册", file: ["zioxx-pitch_cover.png"], cover: "zioxx-pitch_cover.png", desc: "针对 Z 世代设计的品牌手册封面。", tags: ["品牌设计", "Z世代"] },
-            // Art
-            { id: 'a1', mainCat: 'Artistic Expression', subCat: '影像', title: "Pop Mart：逃离拥挤", file: ["pop mart-TVC.mp4"], cover: "popmart_cover.jpg", videoSrc: "pop mart-TVC.mp4", desc: "洞察都市焦虑，以耳机为媒介，通过镜头语言完成现实与幻想的切换。", tags: ["浙江省三等奖", "情绪叙事"] },
-            { id: 'a2', mainCat: 'Artistic Expression', subCat: '影像', title: "Are You Lost", file: ["are you lost.mp4"], cover: "lost_cover.jpg", videoSrc: "are you lost.mp4", desc: "一部探索自我迷失与寻找的实验短片。", tags: ["实验影像", "拼贴动画"] },
-            { id: 'a3', mainCat: 'Artistic Expression', subCat: '影像', title: "养元青：大风吹不去", file: ["Yangyuanqing-video.mp4"], cover: "yang_cover.jpg", videoSrc: "Yangyuanqing-video.mp4", desc: "运用视觉通感，将“发根”比作“墙上海报”。", tags: ["视觉隐喻", "定格动画"] },
-            // 多图示例
-            { id: 'a4', mainCat: 'Artistic Expression', subCat: '文创设计', title: "扬州文人茶", file: ["Yangzhoutea2.jpg", "Yangzhoutea1.jpg", "Yangzhoutea3.jpg", "Yangzhoutea4.jpg"], cover: "Yangzhoutea2.jpg", desc: "挖掘“扬州八怪”文化IP，提炼水墨元素，确立“新中式文人茶”调性。独立完成礼盒结构及周边延展。", tags: ["包装设计", "国潮"] },
-            { id: 'a5', mainCat: 'Artistic Expression', subCat: '插画', title: "客家食养", file: ["hakka1.jpg", "hakka2.jpg", "hakka3.jpg", "hakka4.jpg"], cover: "hakka1.jpg", desc: "基于客家“顺时而食”智慧，将特色美食与节气结合。", tags: ["插画设计", "文创"] },
-            { id: 'a6', mainCat: 'Artistic Expression', subCat: '海报', title: "营养快线海报", file: ["nutri-express-poster1.jpg", "nutri-express-poster2.jpg", "nutri-express-poster3.jpg"], cover: "nutri-express-poster1.jpg", desc: "利用 C4D 构建超现实场景，生动展现产品核心卖点。", tags: ["C4D", "海报"] },
-            { id: 'a7', mainCat: 'Artistic Expression', subCat: 'AIGC', title: "器·观：AIGC系列", file: ["grassland-liver.jpg", "lake-pancreas.jpg", "ocean-heart.jpg", "rainforest-stomach.jpg", "river-kidneys.jpg", "wetland-lung.jpg"], cover: "grassland-liver.jpg", desc: "利用 AIGC 将人体器官创意化为自然地貌。", tags: ["Midjourney", "创意合成"] }
-        ];
-
-        const INITIAL_EVENTS = {
-            "2025-05-28": { title: "欧莱雅商赛", type: "competition", desc: "完成了全英文 Pitch！值了。✨", image: null },
-            "2025-06-10": { title: "大广赛获奖", type: "award", desc: "赤尾视频拿到了全国三等奖！🎬", image: null }
-        };
+        // --- 3. UI Components ---
 
         const APPS = [
             { id: 'home', name: 'Home', icon: 'fa-solid fa-house', color: 'bg-indigo-500', title: 'Welcome Home' }, 
@@ -177,8 +144,8 @@
                                 <img src={user.avatar} className="w-full h-full object-cover" alt="Profile" />
                             </div>
                         </div>
-                        <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome Back, {user.name.split(' ')[1]}!</h1>
-                        <p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">{user.intro.substring(0, 100)}...</p>
+                        <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome Back, {user.name ? user.name.split(' ')[1] : 'Visitor'}!</h1>
+                        <p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">{user.intro ? user.intro.substring(0, 100) : ''}...</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div onClick={() => openApp('resume')} className="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg transition cursor-pointer hover:-translate-y-1 group bg-white/60">
                                 <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
@@ -210,15 +177,28 @@
         const ResumeApp = ({ isAdmin, user, onUpdateUser }) => {
             const [isEditing, setIsEditing] = useState(false);
             const [formData, setFormData] = useState(user);
+            const [saving, setSaving] = useState(false);
+
             useEffect(() => { setFormData(user); }, [user]);
-            const handleSave = () => { onUpdateUser(formData); setIsEditing(false); };
+
+            const handleSave = async () => { 
+                setSaving(true);
+                await onUpdateUser(formData); 
+                setSaving(false);
+                setIsEditing(false); 
+            };
+            
             const handleChange = (field, value) => setFormData({ ...formData, [field]: value });
             const handleArrayChange = (field, value) => setFormData({ ...formData, [field]: value.split(',').map(i => i.trim()) });
             const handleHonorChange = (idx, key, value) => { const newHonors = [...formData.honors]; newHonors[idx][key] = value; setFormData({ ...formData, honors: newHonors }); };
 
             return (
                 <div className="flex h-full bg-[#F5F5F5] relative">
-                    {isAdmin && <button onClick={() => isEditing ? handleSave() : setIsEditing(true)} className="absolute top-4 right-4 z-10 px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 shadow-sm">{isEditing ? 'Save' : 'Edit Profile'}</button>}
+                    {isAdmin && (
+                        <button onClick={() => isEditing ? handleSave() : setIsEditing(true)} disabled={saving} className="absolute top-4 right-4 z-10 px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 shadow-sm disabled:bg-gray-400">
+                            {saving ? 'Saving...' : (isEditing ? 'Save Cloud' : 'Edit Profile')}
+                        </button>
+                    )}
                     <div className="w-72 bg-[#EDECEB] border-r border-gray-300 pt-8 px-6 flex flex-col items-center text-center shrink-0">
                         <div className="w-32 h-32 rounded-full overflow-hidden mb-6 border-4 border-white shadow-lg shrink-0"><img src={user.avatar} className="w-full h-full object-cover object-top" /></div>
                         <h2 className="font-bold text-2xl text-gray-800 mb-1">{user.name}</h2>
@@ -242,17 +222,15 @@
             );
         };
 
-        // --- Portfolio App (CMS & Carousel & Editable Menu) ---
         const PortfolioApp = ({ isAdmin, projects, onUpdateProjects, categories, onUpdateCategories }) => {
             const [mainCat, setMainCat] = useState('All');
             const [subCat, setSubCat] = useState('All');
             const [selectedProject, setSelectedProject] = useState(null);
             
-            // Project Edit States
             const [isEditingMode, setIsEditingMode] = useState(false);
             const [editProjectData, setEditProjectData] = useState(null);
+            const [saving, setSaving] = useState(false);
             
-            // Sidebar Edit States
             const [isSidebarEditing, setIsSidebarEditing] = useState(false);
             const [localCategories, setLocalCategories] = useState([]);
 
@@ -276,8 +254,8 @@
             const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % activeFiles.length);
             const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + activeFiles.length) % activeFiles.length);
 
-            // --- Project Editing Logic ---
-            const handleSaveProject = () => {
+            const handleSaveProject = async () => {
+                setSaving(true);
                 let newProjects;
                 if (editProjectData.id === 'new') {
                     const newId = 'p' + Date.now();
@@ -285,14 +263,17 @@
                 } else {
                     newProjects = projects.map(p => p.id === editProjectData.id ? editProjectData : p);
                 }
-                onUpdateProjects(newProjects);
+                await onUpdateProjects(newProjects);
+                setSaving(false);
                 setIsEditingMode(false); setEditProjectData(null);
             };
 
-            const handleDeleteProject = () => {
-                if (confirm("确定要删除这个项目吗？此操作无法撤销。")) {
+            const handleDeleteProject = async () => {
+                if (confirm("确定要删除这个项目吗？此操作将同步到云端。")) {
+                    setSaving(true);
                     const newProjects = projects.filter(p => p.id !== editProjectData.id);
-                    onUpdateProjects(newProjects);
+                    await onUpdateProjects(newProjects);
+                    setSaving(false);
                     setIsEditingMode(false);
                     setEditProjectData(null);
                     setSelectedProject(null);
@@ -317,12 +298,7 @@
                             let updatedVideoSrc = isVideo ? results[0] : null;
                             if (!isVideo) { updatedVideoSrc = null; }
 
-                            setEditProjectData(prev => ({
-                                ...prev,
-                                file: results, 
-                                videoSrc: updatedVideoSrc,
-                                isPdf: isPdf 
-                            }));
+                            setEditProjectData(prev => ({ ...prev, file: results, videoSrc: updatedVideoSrc, isPdf: isPdf }));
                         });
                     } else {
                         const reader = new FileReader();
@@ -332,96 +308,43 @@
                 }
             };
 
-            // --- Sidebar Editing Logic ---
-            const startSidebarEdit = () => {
-                setLocalCategories(JSON.parse(JSON.stringify(categories)));
-                setIsSidebarEditing(true);
+            const startSidebarEdit = () => { setLocalCategories(JSON.parse(JSON.stringify(categories))); setIsSidebarEditing(true); };
+            const saveSidebarEdit = async () => { 
+                setSaving(true);
+                await onUpdateCategories(localCategories); 
+                setSaving(false);
+                setIsSidebarEditing(false); 
             };
-
-            const saveSidebarEdit = () => {
-                onUpdateCategories(localCategories);
-                setIsSidebarEditing(false);
-            };
-
-            const updateCategoryName = (id, newName) => {
-                setLocalCategories(prev => prev.map(c => c.id === id ? { ...c, name: newName } : c));
-            };
-
-            const updateSubCategory = (catId, subIndex, newValue) => {
-                setLocalCategories(prev => prev.map(c => {
-                    if (c.id !== catId) return c;
-                    const newSubs = [...c.subs];
-                    newSubs[subIndex] = newValue;
-                    return { ...c, subs: newSubs };
-                }));
-            };
-
-            const addSubCategory = (catId) => {
-                setLocalCategories(prev => prev.map(c => {
-                    if (c.id !== catId) return c;
-                    return { ...c, subs: [...c.subs, "New Item"] };
-                }));
-            };
-
-            const removeSubCategory = (catId, subIndex) => {
-                setLocalCategories(prev => prev.map(c => {
-                    if (c.id !== catId) return c;
-                    return { ...c, subs: c.subs.filter((_, i) => i !== subIndex) };
-                }));
-            };
-
-            const addCategory = () => {
-                setLocalCategories(prev => [...prev, { id: 'c' + Date.now(), name: "New Category", subs: ["New Item"] }]);
-            };
-
-            const removeCategory = (catId) => {
-                if (confirm("删除分类将移除该分类下的所有导航项，确定吗？")) {
-                    setLocalCategories(prev => prev.filter(c => c.id !== catId));
-                }
-            };
+            const updateCategoryName = (id, newName) => { setLocalCategories(prev => prev.map(c => c.id === id ? { ...c, name: newName } : c)); };
+            const updateSubCategory = (catId, subIndex, newValue) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; const newSubs = [...c.subs]; newSubs[subIndex] = newValue; return { ...c, subs: newSubs }; })); };
+            const addSubCategory = (catId) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; return { ...c, subs: [...c.subs, "New Item"] }; })); };
+            const removeSubCategory = (catId, subIndex) => { setLocalCategories(prev => prev.map(c => { if (c.id !== catId) return c; return { ...c, subs: c.subs.filter((_, i) => i !== subIndex) }; })); };
+            const addCategory = () => { setLocalCategories(prev => [...prev, { id: 'c' + Date.now(), name: "New Category", subs: ["New Item"] }]); };
+            const removeCategory = (catId) => { if (confirm("删除分类？")) { setLocalCategories(prev => prev.filter(c => c.id !== catId)); } };
 
             const renderPreview = (isLightbox = false) => {
                 if (!activeProject) return <div className="text-gray-400">Select an item</div>;
-                
                 if (activeProject.videoSrc) {
                     return <video src={activeProject.videoSrc} controls className="max-w-full max-h-full rounded-lg shadow-lg" poster={activeProject.cover}></video>;
                 }
-                
                 if (activeProject.isPdf || (typeof activeProject.file === 'string' && activeProject.file.endsWith('.pdf'))) {
-                    return (
-                        <iframe 
-                            src={activeProject.file} 
-                            className="w-full h-full rounded-lg shadow-lg border border-gray-200" 
-                            title="PDF Viewer"
-                        ></iframe>
-                    );
+                    return <iframe src={activeProject.file} className="w-full h-full rounded-lg shadow-lg border border-gray-200"></iframe>;
                 }
-
                 return (
                     <div className="relative w-full h-full flex items-center justify-center overflow-hidden group">
                         <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain transition-all duration-300 rounded-lg shadow-lg" />
-                        
                         {activeFiles.length > 1 && (
                             <>
-                                <div className="absolute bottom-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs z-20">
-                                    {currentIndex + 1} / {activeFiles.length}
-                                </div>
-                                <button className="absolute left-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); prevSlide();}}>
-                                    <i className="fa-solid fa-chevron-left"></i>
-                                </button>
-                                <button className="absolute right-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); nextSlide();}}>
-                                    <i className="fa-solid fa-chevron-right"></i>
-                                </button>
+                                <div className="absolute bottom-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs z-20">{currentIndex + 1} / {activeFiles.length}</div>
+                                <button className="absolute left-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); prevSlide();}}><i className="fa-solid fa-chevron-left"></i></button>
+                                <button className="absolute right-4 bg-white/20 hover:bg-white/50 p-3 rounded-full text-white z-20 backdrop-blur-sm transition" onClick={(e) => {e.stopPropagation(); nextSlide();}}><i className="fa-solid fa-chevron-right"></i></button>
                             </>
                         )}
-                        {!isLightbox && (
-                            <div className="absolute inset-0 bg-transparent cursor-zoom-in z-10" onClick={() => setLightboxOpen(true)}></div>
-                        )}
+                        {!isLightbox && <div className="absolute inset-0 bg-transparent cursor-zoom-in z-10" onClick={() => setLightboxOpen(true)}></div>}
                     </div>
                 );
             };
 
-            // Project Editor UI
             if (isEditingMode && editProjectData) {
                 return (
                     <div className="flex h-full bg-white p-8 flex-col overflow-y-auto relative">
@@ -437,20 +360,15 @@
                                 <div><span className="edit-label">Sub Category</span><input className="edit-input" value={editProjectData.subCat} onChange={e => setEditProjectData({...editProjectData, subCat: e.target.value})} /></div>
                             </div>
                             <div><span className="edit-label">Description</span><textarea className="edit-textarea" value={editProjectData.desc} onChange={e => setEditProjectData({...editProjectData, desc: e.target.value})} /></div>
-                            <div><span className="edit-label">Tags (comma separated)</span><input className="edit-input" value={editProjectData.tags.join(', ')} onChange={e => setEditProjectData({...editProjectData, tags: e.target.value.split(',').map(t=>t.trim())})} /></div>
+                            <div><span className="edit-label">Tags</span><input className="edit-input" value={editProjectData.tags.join(', ')} onChange={e => setEditProjectData({...editProjectData, tags: e.target.value.split(',').map(t=>t.trim())})} /></div>
                              <div className="grid grid-cols-2 gap-4">
                                  <div><span className="edit-label">Cover Image</span><div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={() => coverInputRef.current.click()}>{editProjectData.cover ? <img src={editProjectData.cover} className="h-full object-contain"/> : <span className="text-sm text-gray-400">Upload Cover</span>}</div><input type="file" ref={coverInputRef} className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'cover')} /></div>
-                                 <div><span className="edit-label">Main Files (Multiple)</span><div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={() => mainFileInputRef.current.click()}>{editProjectData.file && editProjectData.file.length > 0 ? <span className="text-green-500 font-bold">{Array.isArray(editProjectData.file) ? editProjectData.file.length : 1} Files Selected</span> : <span className="text-sm text-gray-400">Upload Images/Video</span>}</div><input type="file" ref={mainFileInputRef} className="hidden" multiple accept="image/*,video/*,application/pdf" onChange={(e) => handleFileUpload(e, 'main')} /></div>
+                                 <div><span className="edit-label">Main Files</span><div className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50" onClick={() => mainFileInputRef.current.click()}>{editProjectData.file && editProjectData.file.length > 0 ? <span className="text-green-500 font-bold">{Array.isArray(editProjectData.file) ? editProjectData.file.length : 1} Files Selected</span> : <span className="text-sm text-gray-400">Upload Images/Video</span>}</div><input type="file" ref={mainFileInputRef} className="hidden" multiple accept="image/*,video/*,application/pdf" onChange={(e) => handleFileUpload(e, 'main')} /></div>
                             </div>
-
                             <div className="flex gap-3 pt-4 items-center">
-                                <button onClick={handleSaveProject} className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 shadow-md">Save Project</button>
+                                <button onClick={handleSaveProject} disabled={saving} className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 shadow-md disabled:bg-gray-400">{saving ? 'Uploading...' : 'Save Cloud'}</button>
                                 <button onClick={() => setIsEditingMode(false)} className="text-gray-500 px-4 py-2 hover:bg-gray-100 rounded">Cancel</button>
-                                {editProjectData.id !== 'new' && (
-                                    <button onClick={handleDeleteProject} className="ml-auto bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md flex items-center">
-                                        <i className="fa-solid fa-trash mr-2"></i> Delete
-                                    </button>
-                                )}
+                                {editProjectData.id !== 'new' && <button onClick={handleDeleteProject} className="ml-auto bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 shadow-md flex items-center"><i className="fa-solid fa-trash mr-2"></i> Delete</button>}
                             </div>
                         </div>
                     </div>
@@ -459,10 +377,7 @@
 
             return (
                 <div className="flex h-full bg-white text-gray-800">
-                    {/* SIDEBAR */}
                     <div className="w-64 bg-[#F3F2F2] border-r border-[#E5E5E5] pt-4 flex flex-col backdrop-blur-xl h-full shrink-0 overflow-y-auto">
-                        
-                        {/* Sidebar Header / Tools */}
                         <div className="px-4 mb-2 flex justify-between items-center">
                             {isAdmin && !isSidebarEditing && (
                                 <div className="flex gap-2 w-full">
@@ -472,17 +387,14 @@
                             )}
                             {isSidebarEditing && (
                                 <div className="flex gap-2 w-full">
-                                    <button onClick={saveSidebarEdit} className="flex-1 bg-green-500 text-white py-1.5 rounded text-xs font-bold hover:bg-green-600">Save</button>
+                                    <button onClick={saveSidebarEdit} disabled={saving} className="flex-1 bg-green-500 text-white py-1.5 rounded text-xs font-bold hover:bg-green-600">{saving?'Saving':'Save Cloud'}</button>
                                     <button onClick={() => setIsSidebarEditing(false)} className="bg-gray-300 text-gray-600 px-2 py-1.5 rounded text-xs hover:bg-gray-400">Cancel</button>
                                 </div>
                             )}
                         </div>
-
-                        {/* Sidebar Content */}
                         {!isSidebarEditing ? (
                             <>
                                 <div onClick={() => setMainCat('All')} className={`px-4 py-2 mx-2 rounded-md text-sm cursor-pointer flex items-center gap-3 ${mainCat==='All' ? 'bg-[#DAD9D9] font-bold' : 'hover:bg-[#E5E5E5]'}`}><i className="fa-solid fa-layer-group text-blue-500"></i> All Works</div>
-                                
                                 {categories.map(cat => (
                                     <div key={cat.id}>
                                         <div className="mt-6 px-4 mb-1 text-xs font-bold text-gray-400 uppercase">{cat.name}</div>
@@ -515,13 +427,10 @@
                             </div>
                         )}
                     </div>
-                    
-                    {/* Content Area (Thumbs & Preview) */}
                     <div className="flex-1 flex flex-col h-full overflow-hidden">
                         <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8 border-b border-[#E5E5E5] overflow-hidden relative group">
                             {renderPreview(false)}
                         </div>
-                        
                         <div className="h-40 bg-white overflow-x-auto whitespace-nowrap p-4 flex gap-4 items-center shrink-0">
                             {filteredProjects.map(p => (
                                 <div key={p.id} onClick={() => setSelectedProject(p)} className={`inline-block w-32 text-center cursor-pointer p-2 rounded-md transition-all ${activeProject && activeProject.id === p.id ? 'bg-[#E5F1FB]' : 'hover:bg-[#F5F5F5]'}`}>
@@ -533,8 +442,6 @@
                             ))}
                         </div>
                     </div>
-                    
-                    {/* Info Panel */}
                     <div className="w-72 bg-white border-l border-[#E5E5E5] p-6 overflow-y-auto hidden md:block shrink-0 relative">
                         {activeProject ? (
                             <>
@@ -548,13 +455,9 @@
                             </>
                         ) : <div className="h-full flex items-center justify-center text-xs text-gray-400">No selection</div>}
                     </div>
-
-                    {/* Lightbox */}
                     {lightboxOpen && activeProject && (
                         <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-                            <div className="w-full h-full flex items-center justify-center p-10" onClick={e => e.stopPropagation()}>
-                                {renderPreview(true)}
-                            </div>
+                            <div className="w-full h-full flex items-center justify-center p-10" onClick={e => e.stopPropagation()}>{renderPreview(true)}</div>
                             <button className="absolute top-6 right-6 text-white/50 hover:text-white text-4xl z-50" onClick={() => setLightboxOpen(false)}><i className="fa-solid fa-xmark"></i></button>
                         </div>
                     )}
@@ -567,6 +470,7 @@
             const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
             const [isEditing, setIsEditing] = useState(false);
             const [form, setForm] = useState({ title: '', desc: '', image: null });
+            const [saving, setSaving] = useState(false);
             const fileInputRef = useRef(null);
 
             const getMonthData = (date) => {
@@ -585,20 +489,17 @@
             const days = getMonthData(currentMonth);
             const currentEvent = events[selectedDate];
 
-            const changeMonth = (delta) => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + delta, 1));
-
             useEffect(() => {
                 setIsEditing(false);
-                if (currentEvent) {
-                    setForm({ title: currentEvent.title, desc: currentEvent.desc, image: currentEvent.image });
-                } else {
-                    setForm({ title: '', desc: '', image: null });
-                }
+                if (currentEvent) setForm({ title: currentEvent.title, desc: currentEvent.desc, image: currentEvent.image });
+                else setForm({ title: '', desc: '', image: null });
             }, [selectedDate, events]);
 
-            const handleSave = () => {
+            const handleSave = async () => {
+                setSaving(true);
                 const newEvents = { ...events, [selectedDate]: { ...form, type: 'life' } };
-                onUpdateEvents(newEvents); 
+                await onUpdateEvents(newEvents); 
+                setSaving(false);
                 setIsEditing(false);
             };
              
@@ -638,7 +539,7 @@
                                     {form.image ? <img src={form.image} className="w-full h-full object-cover" /> : <span className="text-gray-400 text-sm"><i className="fa-solid fa-image mr-2"></i> Add Photo</span>}
                                     <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} />
                                 </div>
-                                <div className="flex gap-2 mt-auto"><button onClick={handleSave} className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Save</button><button onClick={() => setIsEditing(false)} className="px-4 py-2 text-gray-500 hover:text-gray-700">Cancel</button></div>
+                                <div className="flex gap-2 mt-auto"><button onClick={handleSave} disabled={saving} className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition disabled:bg-gray-400">{saving?'Saving':'Save Cloud'}</button><button onClick={() => setIsEditing(false)} className="px-4 py-2 text-gray-500 hover:text-gray-700">Cancel</button></div>
                             </div>
                         ) : (
                             <>
@@ -685,28 +586,46 @@
             const [passwordInput, setPasswordInput] = useState("");
             const [errorMsg, setErrorMsg] = useState("");
 
-            const [userData, setUserData] = useState(() => JSON.parse(localStorage.getItem('macOS_User')) || INITIAL_USER);
-            const [projectData, setProjectData] = useState(() => JSON.parse(localStorage.getItem('macOS_Projects')) || INITIAL_PROJECTS);
-            const [eventData, setEventData] = useState(() => JSON.parse(localStorage.getItem('macOS_Calendar_Events')) || INITIAL_EVENTS);
-            // NEW: Categories State
-            const [categories, setCategories] = useState(() => JSON.parse(localStorage.getItem('macOS_Categories')) || INITIAL_CATEGORIES);
+            // --- 核心修改：数据改为从 Supabase 加载 ---
+            const [userData, setUserData] = useState(DEFAULT_USER);
+            const [projectData, setProjectData] = useState(DEFAULT_PROJECTS);
+            const [eventData, setEventData] = useState(DEFAULT_EVENTS);
+            const [categories, setCategories] = useState(DEFAULT_CATS);
 
-            const updateUser = (newData) => { setUserData(newData); localStorage.setItem('macOS_User', JSON.stringify(newData)); };
-            const updateProjects = (newData) => { setProjectData(newData); localStorage.setItem('macOS_Projects', JSON.stringify(newData)); };
-            const updateEvents = (newData) => { setEventData(newData); localStorage.setItem('macOS_Calendar_Events', JSON.stringify(newData)); };
-            const updateCategories = (newData) => { setCategories(newData); localStorage.setItem('macOS_Categories', JSON.stringify(newData)); };
-            
-            const handleSystemReset = () => {
-                if(confirm("确定要重置系统吗？所有修改将丢失。")) {
-                    localStorage.clear();
-                    window.location.reload();
-                }
+            // 页面加载时，去云端抓取数据
+            useEffect(() => {
+                const fetchData = async () => {
+                    const { data, error } = await supabase.from('site_data').select('*');
+                    if (!error && data) {
+                        // 把下载下来的数据，分配给各个 State
+                        data.forEach(row => {
+                            if (row.id === 'user') setUserData(prev => ({...prev, ...row.content}));
+                            if (row.id === 'projects') setProjectData(row.content);
+                            if (row.id === 'categories') setCategories(row.content);
+                            if (row.id === 'events') setEventData(row.content);
+                        });
+                    } else if (error) {
+                        console.error('Supabase load error:', error);
+                    }
+                };
+                fetchData();
+            }, []);
+
+            // 通用的云端更新函数
+            const updateCloud = async (id, content) => {
+                const { error } = await supabase.from('site_data').upsert({ id, content });
+                if (error) console.error("Cloud Save Error:", error);
             };
 
-            const dragItem = useRef(); const dragStartPos = useRef(); const resizeItem = useRef();
-
-            useEffect(() => { const t = setInterval(() => setCurrentTime(new Date()), 1000); return () => clearInterval(t); }, []);
+            const updateUser = (newData) => { setUserData(newData); updateCloud('user', newData); };
+            const updateProjects = (newData) => { setProjectData(newData); updateCloud('projects', newData); };
+            const updateEvents = (newData) => { setEventData(newData); updateCloud('events', newData); };
+            const updateCategories = (newData) => { setCategories(newData); updateCloud('categories', newData); };
             
+            const handleSystemReset = () => { window.location.reload(); };
+
+            const dragItem = useRef(); const dragStartPos = useRef(); const resizeItem = useRef();
+            useEffect(() => { const t = setInterval(() => setCurrentTime(new Date()), 1000); return () => clearInterval(t); }, []);
             const timeString = currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false });
             const dateString = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
@@ -722,12 +641,7 @@
                 }
             };
             
-            const handleLogout = () => {
-                 setWindows([]);
-                 setLocked(true);
-                 setBooting(false);
-                 setPasswordInput("");
-            };
+            const handleLogout = () => { setWindows([]); setLocked(true); setBooting(false); setPasswordInput(""); };
 
             const openApp = (appId) => {
                 const app = APPS.find(a => a.id === appId);
@@ -748,35 +662,11 @@
             const focusWindow = (id) => { setActiveWindowId(id); setWindows(windows.map(w => w.id === id ? { ...w, zIndex: Date.now() } : w)); };
             const toggleMaximize = (id) => setWindows(windows.map(w => w.id === id ? { ...w, maximized: !w.maximized, x: !w.maximized ? 0 : 50, y: !w.maximized ? 32 : 50, width: !w.maximized ? window.innerWidth : 1000, height: !w.maximized ? window.innerHeight - 80 : 650 } : w));
 
-            const onTitleMouseDown = (e, id) => {
-                focusWindow(id);
-                const win = windows.find(w => w.id === id);
-                if(win.maximized) return;
-                dragItem.current = id;
-                dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, winX: win.x, winY: win.y };
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            };
-            const onResizeMouseDown = (e, id) => {
-                e.stopPropagation();
-                resizeItem.current = id;
-                const win = windows.find(w => w.id === id);
-                dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, w: win.width, h: win.height };
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            };
+            const onTitleMouseDown = (e, id) => { focusWindow(id); const win = windows.find(w => w.id === id); if(win.maximized) return; dragItem.current = id; dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, winX: win.x, winY: win.y }; document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp); };
+            const onResizeMouseDown = (e, id) => { e.stopPropagation(); resizeItem.current = id; const win = windows.find(w => w.id === id); dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, w: win.width, h: win.height }; document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp); };
             const onMouseMove = (e) => {
-                if (dragItem.current) {
-                    e.preventDefault();
-                    const dx = e.clientX - dragStartPos.current.mouseX;
-                    const dy = e.clientY - dragStartPos.current.mouseY;
-                    setWindows(prev => prev.map(w => w.id === dragItem.current ? { ...w, x: dragStartPos.current.winX + dx, y: dragStartPos.current.winY + dy } : w));
-                } else if (resizeItem.current) {
-                    e.preventDefault();
-                    const dx = e.clientX - dragStartPos.current.mouseX;
-                    const dy = e.clientY - dragStartPos.current.mouseY;
-                    setWindows(prev => prev.map(w => w.id === resizeItem.current ? { ...w, width: Math.max(600, dragStartPos.current.w + dx), height: Math.max(400, dragStartPos.current.h + dy) } : w));
-                }
+                if (dragItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === dragItem.current ? { ...w, x: dragStartPos.current.winX + dx, y: dragStartPos.current.winY + dy } : w)); } 
+                else if (resizeItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === resizeItem.current ? { ...w, width: Math.max(600, dragStartPos.current.w + dx), height: Math.max(400, dragStartPos.current.h + dy) } : w)); }
             };
             const onMouseUp = () => { dragItem.current = null; resizeItem.current = null; document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp); };
 
@@ -792,7 +682,7 @@
                         </div>
                         <div className="flex flex-col items-center animate-fade-in mt-10">
                             <img src={userData.avatar} className="w-24 h-24 rounded-full mb-6 shadow-2xl object-cover object-top ring-2 ring-white/20" />
-                            <h2 className="text-white text-xl font-semibold mb-6 drop-shadow-md tracking-wide start-text">{userData.name}</h2>
+                            <h2 className="text-white text-xl font-semibold mb-6 drop-shadow-md tracking-wide start-text">{userData.name || 'Loading...'}</h2>
                             <div className="relative group flex flex-col items-center gap-2">
                                 <div className="relative">
                                     <input type="password" placeholder="Enter Password" value={passwordInput} onChange={(e)=>setPasswordInput(e.target.value)} className="w-48 bg-white/20 border-0 rounded-full px-4 py-1.5 text-white text-center backdrop-blur-md transition-all focus:bg-white/30 focus:w-56" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} />

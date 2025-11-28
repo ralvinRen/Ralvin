@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>RalvinRen-portfolio | Ren Jiaxuan (Ralvin) Creative Works</title>
-    <meta name="description" content="Official RalvinRen-portfolio. The digital media art and brand strategy portfolio of Ren Jiaxuan (Ralvin). 官方个人作品集网站。">
-    <meta name="keywords" content="RalvinRen-portfolio, Ren Jiaxuan, Ralvin, Portfolio, Digital Media Art, Brand Strategy, 品牌策划, 数字媒体艺术, 浙江师范大学">
+    <title>RalvinRen | Digital Media Art & Strategy</title>
+    <meta name="description" content="Official website of RalvinRen (Ren Jiaxuan). Exploring the intersection of digital media art, brand strategy, and visual storytelling.">
+    <meta name="keywords" content="RalvinRen, Ren Jiaxuan, Ralvin, Digital Media Art, Brand Strategy, 品牌策划, 数字媒体艺术, 浙江师范大学">
     <meta name="author" content="Ren Jiaxuan">
     
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -526,9 +526,9 @@
 
             return (
                 <div className="w-full h-screen wallpaper overflow-hidden relative font-[Inter]">
-                    {/* Top Bar - Z-Index FIXED */}
+                    {/* ✅ 修改点 2：顶部菜单栏左上角的文字已改为 RalvinRen */}
                     <div className="h-7 w-full glass-dark flex items-center justify-between px-4 text-xs font-medium absolute top-0 shadow-sm text-white/90 z-[9999]">
-                        <div className="flex items-center gap-4"><i className="fa-brands fa-apple text-sm cursor-pointer hover:text-white" onClick={handleLogout}></i><span className="font-bold hidden md:inline">Portfolio</span></div>
+                        <div className="flex items-center gap-4"><i className="fa-brands fa-apple text-sm cursor-pointer hover:text-white" onClick={handleLogout}></i><span className="font-bold hidden md:inline">RalvinRen</span></div>
                         <div className="flex items-center gap-4">{isAdmin && <span className="bg-blue-500/80 px-2 rounded text-[10px]">Admin</span>}<i className="fa-solid fa-wifi"></i><span>{currentTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
                     </div>
 

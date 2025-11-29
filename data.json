@@ -3,41 +3,251 @@
         "name": "Ren Jiaxuan",
         "avatar": "profile.jpg",
         "adminPassword": "ralvin",
+        "intro": "你好，我是任佳煊。一名追求“策创合一”的数字媒体艺术学生。我不仅擅长用画面讲故事（视频/设计），更热衷于挖掘品牌背后的策略支点。我拥有敏锐的 Z 世代洞察力，期待用灵感与逻辑为品牌创造价值。",
+        "skillsStrategy": [
+            "品牌全案",
+            "文案策划",
+            "创意脚本",
+            "竞品分析",
+            "社媒运营"
+        ],
+        "skillsVisual": [
+            "PS",
+            "AI",
+            "Premiere",
+            "After Effects",
+            "Figma"
+        ],
+        "honors": [
+            {
+                "title": "全国一等奖",
+                "desc": "全国商科精英挑战赛会展策划赛道"
+            },
+            {
+                "title": "全国三等奖",
+                "desc": "第17届全国大学生广告艺术大赛 (视频类)"
+            },
+            {
+                "title": "官方参赛认证",
+                "desc": "L'Oréal Brandstorm 2025"
+            },
+            {
+                "title": "省级一等奖",
+                "desc": "第13届浙江省大学生广告创意设计大赛"
+            }
+        ],
         "email": "1627716641@qq.com",
         "phone": "195 4899 4021",
         "school": "浙江师范大学 | 数字媒体艺术",
         "gpa": "3.92 (Top 3%)",
         "english": "CET-6 550+ | 雅思 6.5",
         "exchange": "延世大学 (2025 Summer)",
-        "resumeFile": "任_佳煊_125515171091.pdf",
-        "intro": "你好，我是任佳煊。一名追求“策创合一”的数字媒体艺术学生。我不仅擅长用画面讲故事（视频/设计），更热衷于挖掘品牌背后的策略支点。我拥有敏锐的 Z 世代洞察力，期待用灵感与逻辑为品牌创造价值。",
-        "skillsStrategy": ["品牌全案", "文案策划", "创意脚本", "竞品分析", "社媒运营"],
-        "skillsVisual": ["PS", "AI", "Premiere", "After Effects", "C4D", "Midjourney", "Figma"],
-        "honors": [
-            { "title": "全国一等奖", "desc": "全国商科精英挑战赛会展策划赛道" },
-            { "title": "全国三等奖", "desc": "第17届全国大学生广告艺术大赛 (视频类)" },
-            { "title": "官方参赛认证", "desc": "L'Oréal Brandstorm 2025" },
-            { "title": "省级一等奖", "desc": "第13届浙江省大学生广告创意设计大赛" }
-        ]
+        "resumeFile": "任_佳煊_125515171091.pdf"
     },
-    "categories": [
-        { "id": "cat1", "name": "Brand Strategy", "subs": ["品牌全案", "视频策划", "商赛"] },
-        { "id": "cat2", "name": "Artistic Expression", "subs": ["影像", "插画", "海报", "文创设计", "AIGC"] }
-    ],
     "projects": [
-        { "id": "s1", "mainCat": "Brand Strategy", "subCat": "品牌全案", "title": "赤尾：顺滑到位", "file": ["zioxx-video.mp4"], "cover": "zioxx-video-cover.png", "videoSrc": "zioxx-video.mp4", "desc": "摒弃传统说教，用“双人舞步”隐喻亲密关系。设计“丝滑换装”转场。", "tags": ["大广赛三等奖", "视频策划"] },
-        { "id": "s2", "mainCat": "Brand Strategy", "subCat": "商赛", "title": "L'Oréal Brandstorm", "file": ["loreal.mp4"], "cover": "loreal_cover.jpg", "videoSrc": "loreal.mp4", "desc": "提出 TerraGuard 智能剃须生态系统。负责全英文 Pitch Deck。", "tags": ["官方认证", "CSR策略"] },
-        { "id": "s3", "mainCat": "Brand Strategy", "subCat": "品牌全案", "title": "赤尾品牌手册", "file": ["zioxx-pitch_cover.png"], "cover": "zioxx-pitch_cover.png", "desc": "针对 Z 世代设计的品牌手册封面。", "tags": ["品牌设计", "Z世代"] },
-        { "id": "a1", "mainCat": "Artistic Expression", "subCat": "影像", "title": "Pop Mart：逃离拥挤", "file": ["pop mart-TVC.mp4"], "cover": "popmart_cover.jpg", "videoSrc": "pop mart-TVC.mp4", "desc": "洞察都市焦虑，以耳机为媒介，通过镜头语言完成现实与幻想的切换。", "tags": ["浙江省三等奖", "情绪叙事"] },
-        { "id": "a2", "mainCat": "Artistic Expression", "subCat": "影像", "title": "Are You Lost", "file": ["are you lost.mp4"], "cover": "lost_cover.jpg", "videoSrc": "are you lost.mp4", "desc": "一部探索自我迷失与寻找的实验短片。", "tags": ["实验影像", "拼贴动画"] },
-        { "id": "a3", "mainCat": "Artistic Expression", "subCat": "影像", "title": "养元青：大风吹不去", "file": ["Yangyuanqing-video.mp4"], "cover": "yang_cover.jpg", "videoSrc": "Yangyuanqing-video.mp4", "desc": "运用视觉通感，将“发根”比作“墙上海报”。", "tags": ["视觉隐喻", "定格动画"] },
-        { "id": "a4", "mainCat": "Artistic Expression", "subCat": "文创设计", "title": "扬州文人茶", "file": ["Yangzhoutea2.jpg", "Yangzhoutea1.jpg", "Yangzhoutea3.jpg", "Yangzhoutea4.jpg"], "cover": "Yangzhoutea2.jpg", "desc": "挖掘“扬州八怪”文化IP，提炼水墨元素，确立“新中式文人茶”调性。", "tags": ["包装设计", "国潮"] },
-        { "id": "a5", "mainCat": "Artistic Expression", "subCat": "插画", "title": "客家食养", "file": ["hakka1.jpg", "hakka2.jpg", "hakka3.jpg", "hakka4.jpg"], "cover": "hakka1.jpg", "desc": "基于客家“顺时而食”智慧，将特色美食与节气结合。", "tags": ["插画设计", "文创"] },
-        { "id": "a6", "mainCat": "Artistic Expression", "subCat": "海报", "title": "营养快线海报", "file": ["nutri-express-poster1.jpg", "nutri-express-poster2.jpg", "nutri-express-poster3.jpg"], "cover": "nutri-express-poster1.jpg", "desc": "利用 C4D 构建超现实场景，生动展现产品核心卖点。", "tags": ["C4D", "海报"] },
-        { "id": "a7", "mainCat": "Artistic Expression", "subCat": "AIGC", "title": "器·观：AIGC系列", "file": ["grassland-liver.jpg", "lake-pancreas.jpg", "ocean-heart.jpg", "rainforest-stomach.jpg", "river-kidneys.jpg", "wetland-lung.jpg"], "cover": "grassland-liver.jpg", "desc": "利用 AIGC 将人体器官创意化为自然地貌。", "tags": ["Midjourney", "创意合成"] }
+        {
+            "id": "s1",
+            "mainCat": "Brand Strategy",
+            "subCat": "品牌全案",
+            "title": "赤尾：顺滑到位",
+            "file": [
+                "zioxx-video.mp4"
+            ],
+            "cover": "zioxx-video-cover.png",
+            "videoSrc": "zioxx-video.mp4",
+            "desc": "摒弃传统说教，用“双人舞步”隐喻亲密关系。设计“丝滑换装”转场。",
+            "tags": [
+                "大广赛三等奖",
+                "视频策划"
+            ]
+        },
+        {
+            "id": "s2",
+            "mainCat": "Brand Strategy",
+            "subCat": "商赛",
+            "title": "L'Oréal Brandstorm",
+            "file": [
+                "loreal.mp4"
+            ],
+            "cover": "loreal_cover.jpg",
+            "videoSrc": "loreal.mp4",
+            "desc": "提出 TerraGuard 智能剃须生态系统。负责全英文 Pitch Deck。",
+            "tags": [
+                "官方认证",
+                "CSR策略"
+            ]
+        },
+        {
+            "id": "s3",
+            "mainCat": "Brand Strategy",
+            "subCat": "品牌全案",
+            "title": "赤尾品牌手册",
+            "file": [
+                "zioxx-pitch_cover.png"
+            ],
+            "cover": "zioxx-pitch_cover.png",
+            "desc": "针对 Z 世代设计的品牌手册封面。",
+            "tags": [
+                "品牌设计",
+                "Z世代"
+            ]
+        },
+        {
+            "id": "a1",
+            "mainCat": "Artistic Expression",
+            "subCat": "影像",
+            "title": "Pop Mart：逃离拥挤",
+            "file": [
+                "pop mart-TVC.mp4"
+            ],
+            "cover": "popmart_cover.jpg",
+            "videoSrc": "pop mart-TVC.mp4",
+            "desc": "洞察都市焦虑，以耳机为媒介，通过镜头语言完成现实与幻想的切换。",
+            "tags": [
+                "浙江省三等奖",
+                "情绪叙事"
+            ]
+        },
+        {
+            "id": "a2",
+            "mainCat": "Artistic Expression",
+            "subCat": "影像",
+            "title": "Are You Lost",
+            "file": [
+                "are you lost.mp4"
+            ],
+            "cover": "lost_cover.jpg",
+            "videoSrc": "are you lost.mp4",
+            "desc": "一部探索自我迷失与寻找的实验短片。",
+            "tags": [
+                "实验影像",
+                "拼贴动画"
+            ]
+        },
+        {
+            "id": "a3",
+            "mainCat": "Artistic Expression",
+            "subCat": "影像",
+            "title": "养元青：大风吹不去",
+            "file": [
+                "Yangyuanqing-video.mp4"
+            ],
+            "cover": "yang_cover.jpg",
+            "videoSrc": "Yangyuanqing-video.mp4",
+            "desc": "运用视觉通感，将“发根”比作“墙上海报”。",
+            "tags": [
+                "视觉隐喻",
+                "定格动画"
+            ]
+        },
+        {
+            "id": "a4",
+            "mainCat": "Artistic Expression",
+            "subCat": "文创设计",
+            "title": "扬州文人茶",
+            "file": [
+                "Yangzhoutea2.jpg",
+                "Yangzhoutea1.jpg",
+                "Yangzhoutea3.jpg",
+                "Yangzhoutea4.jpg"
+            ],
+            "cover": "Yangzhoutea2.jpg",
+            "desc": "挖掘“扬州八怪”文化IP，提炼水墨元素，确立“新中式文人茶”调性。",
+            "tags": [
+                "包装设计",
+                "国潮"
+            ]
+        },
+        {
+            "id": "a5",
+            "mainCat": "Artistic Expression",
+            "subCat": "插画",
+            "title": "客家食养",
+            "file": [
+                "hakka1.jpg",
+                "hakka2.jpg",
+                "hakka3.jpg",
+                "hakka4.jpg"
+            ],
+            "cover": "hakka1.jpg",
+            "desc": "基于客家“顺时而食”智慧，将特色美食与节气结合。",
+            "tags": [
+                "插画设计",
+                "文创"
+            ]
+        },
+        {
+            "id": "a6",
+            "mainCat": "Artistic Expression",
+            "subCat": "海报",
+            "title": "营养快线海报",
+            "file": [
+                "nutri-express-poster1.jpg",
+                "nutri-express-poster2.jpg",
+                "nutri-express-poster3.jpg"
+            ],
+            "cover": "nutri-express-poster1.jpg",
+            "desc": "利用 C4D 构建超现实场景，生动展现产品核心卖点。",
+            "tags": [
+                "C4D",
+                "海报"
+            ]
+        },
+        {
+            "id": "a7",
+            "mainCat": "Artistic Expression",
+            "subCat": "AIGC",
+            "title": "器·观：AIGC系列",
+            "file": [
+                "grassland-liver.jpg",
+                "lake-pancreas.jpg",
+                "ocean-heart.jpg",
+                "rainforest-stomach.jpg",
+                "river-kidneys.jpg",
+                "wetland-lung.jpg"
+            ],
+            "cover": "grassland-liver.jpg",
+            "desc": "利用 AIGC 将人体器官创意化为自然地貌。",
+            "tags": [
+                "Midjourney",
+                "创意合成"
+            ]
+        }
+    ],
+    "categories": [
+        {
+            "id": "cat1",
+            "name": "Brand Strategy",
+            "subs": [
+                "品牌全案",
+                "视频策划",
+                "商赛"
+            ]
+        },
+        {
+            "id": "cat2",
+            "name": "Artistic Expression",
+            "subs": [
+                "影像",
+                "插画",
+                "海报",
+                "文创设计",
+                "AIGC"
+            ]
+        }
     ],
     "events": {
-        "2025-05-28": { "title": "欧莱雅商赛", "type": "competition", "desc": "完成了全英文 Pitch！值了。✨", "image": null },
-        "2025-06-10": { "title": "大广赛获奖", "type": "award", "desc": "赤尾视频拿到了全国三等奖！🎬", "image": null }
+        "2025-05-28": {
+            "title": "欧莱雅商赛",
+            "type": "competition",
+            "desc": "完成了全英文 Pitch！值了。✨",
+            "image": null
+        },
+        "2025-06-10": {
+            "title": "大广赛获奖",
+            "type": "award",
+            "desc": "赤尾视频拿到了全国三等奖！🎬",
+            "image": null
+        }
     }
 }

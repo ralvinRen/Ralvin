@@ -106,95 +106,35 @@
             </div>
         );
 
-        // --- 核心修改：个人信息全编辑功能 ---
         const ResumeApp = ({ isAdmin, user, onUpdateUser }) => {
             const [isEditing, setIsEditing] = useState(false);
             const [formData, setFormData] = useState(user);
             const [saving, setSaving] = useState(false);
-            const avatarInputRef = useRef(null); // 头像上传引用
-
             useEffect(() => { setFormData(user); }, [user]);
             const handleSave = async () => { setSaving(true); await onUpdateUser(formData); setSaving(false); setIsEditing(false); };
             const handleChange = (field, value) => setFormData({ ...formData, [field]: value });
             
-            // Skills 数组操作
+            // --- 优化：Skills 数组增删逻辑 ---
             const handleSkillChange = (key, idx, val) => { const newSkills = [...formData[key]]; newSkills[idx] = val; setFormData({...formData, [key]: newSkills}); };
             const addSkill = (key) => setFormData({...formData, [key]: [...formData[key], "New Skill"]});
             const removeSkill = (key, idx) => setFormData({...formData, [key]: formData[key].filter((_, i) => i !== idx)});
 
-            // Honors 数组操作
+            // --- 优化：Honors 数组增删逻辑 ---
             const handleHonorChange = (idx, key, value) => { const newHonors = [...formData.honors]; newHonors[idx][key] = value; setFormData({ ...formData, honors: newHonors }); };
             const addHonor = () => setFormData({...formData, honors: [...formData.honors, { title: "New Title", desc: "Description" }]});
             const removeHonor = (idx) => setFormData({...formData, honors: formData.honors.filter((_, i) => i !== idx)});
 
-            // 头像上传逻辑
-            const handleAvatarUpload = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => setFormData({ ...formData, avatar: reader.result });
-                    reader.readAsDataURL(file);
-                }
-            };
-
             return (
                 <div className="flex flex-col md:flex-row h-full bg-[#F5F5F5] relative overflow-hidden">
                     {isAdmin && <button onClick={() => isEditing ? handleSave() : setIsEditing(true)} disabled={saving} className="absolute top-4 right-4 z-20 px-3 py-1 bg-blue-500 text-white rounded text-xs shadow-sm">{saving ? 'Saving...' : (isEditing ? 'Save' : 'Edit')}</button>}
-                    
-                    {/* 左侧侧边栏 (个人信息区域) */}
                     <div className="w-full md:w-72 bg-[#EDECEB] border-b md:border-r border-gray-300 p-6 flex flex-col items-center text-center shrink-0">
-                        {/* 可编辑头像 */}
-                        <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg group">
-                            <img src={formData.avatar} className="w-full h-full object-cover" />
-                            {isEditing && (
-                                <div onClick={() => avatarInputRef.current.click()} className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-                                    <i className="fa-solid fa-camera text-white text-2xl"></i>
-                                </div>
-                            )}
-                            <input type="file" ref={avatarInputRef} className="hidden" accept="image/*" onChange={handleAvatarUpload} />
-                        </div>
-
-                        {/* 可编辑姓名 */}
-                        {isEditing ? (
-                            <input 
-                                className="font-bold text-xl md:text-2xl text-gray-800 text-center bg-transparent border-b-2 border-blue-500 outline-none w-full mb-2 pb-1"
-                                value={formData.name}
-                                onChange={e => handleChange('name', e.target.value)}
-                            />
-                        ) : (
-                            <h2 className="font-bold text-xl md:text-2xl text-gray-800">{user.name}</h2>
-                        )}
-
-                        <p className="text-xs md:text-sm text-gray-500 mb-4">Brand Strategy & Creative</p>
-                        
-                        {/* 电脑端显示的信息卡片 (可编辑) */}
-                        <div className="w-full space-y-2 text-left mt-6 hidden md:block">
-                            {['school', 'email'].map(f => (
-                                <div key={f} className="bg-white p-3 rounded-lg text-sm shadow-sm">
-                                    <div className="text-[10px] text-gray-400 font-bold uppercase mb-1">{f}</div>
-                                    {isEditing ? 
-                                        <input className="edit-input border-b border-gray-200" value={formData[f]} onChange={e=>handleChange(f,e.target.value)}/> 
-                                        : <div className="break-all">{user[f]}</div>
-                                    }
-                                </div>
-                            ))}
-                        </div>
+                        <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg"><img src={user.avatar} className="w-full h-full object-cover" /></div>
+                        <h2 className="font-bold text-2xl text-gray-800">{user.name}</h2>
+                        <div className="w-full space-y-2 text-left mt-6 hidden md:block">{['school', 'email'].map(f => (<div key={f} className="bg-white p-3 rounded-lg text-sm shadow-sm"><div className="text-[10px] text-gray-400 font-bold uppercase">{f}</div>{isEditing ? <input className="edit-input" value={formData[f]} onChange={e=>handleChange(f,e.target.value)}/> : user[f]}</div>))}</div>
                     </div>
-
                     <div className="flex-1 p-8 overflow-y-auto bg-white">
-                        {/* 手机端显示的信息卡片 (可编辑) */}
-                        <div className="md:hidden space-y-2 mb-8">
-                            {['school', 'email'].map(f => (
-                                <div key={f} className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-                                    <span className="font-bold uppercase mr-1">{f}:</span> 
-                                    {isEditing ? <input className="bg-transparent border-b border-gray-300 w-full outline-none" value={formData[f]} onChange={e=>handleChange(f,e.target.value)}/> : user[f]}
-                                </div>
-                            ))}
-                        </div>
-
                         <h1 className="text-4xl font-bold mb-8">About Me</h1>
                         {isEditing ? <textarea className="edit-textarea" value={formData.intro} onChange={e=>handleChange('intro',e.target.value)}/> : <p className="text-gray-600 text-lg mb-8">{user.intro}</p>}
-                        
                         <div className="grid grid-cols-1 gap-8">
                             <div>
                                 <h3 className="font-bold border-b-2 border-black pb-2 mb-4">Skills</h3>
@@ -254,14 +194,15 @@
                 return true;
             });
 
-            // 侧边栏联动优化
+            // --- 核心优化：分类切换自动选中第一个作品 ---
+            // 当筛选条件变化时，自动将 selectedProject 重置为该分类下的第一个作品
             useEffect(() => {
                 if (!isMobile && filteredProjects.length > 0) {
                     setSelectedProject(filteredProjects[0]);
                 } else if (!isMobile) {
                     setSelectedProject(null);
                 }
-            }, [mainCat, subCat]);
+            }, [mainCat, subCat]); // 监听分类变化
 
             const activeProject = selectedProject || (isMobile ? null : filteredProjects[0]);
             const activeFiles = activeProject ? (Array.isArray(activeProject.file) ? activeProject.file : [activeProject.file]) : [];
@@ -344,7 +285,7 @@
                                 <div><span className="text-xs font-bold text-gray-400">SUB</span><input className="edit-input" value={editProjectData.subCat} onChange={e => setEditProjectData({...editProjectData, subCat: e.target.value})} /></div>
                             </div>
                             <div><span className="text-xs font-bold text-gray-400">DESC</span><textarea className="edit-textarea" value={editProjectData.desc} onChange={e => setEditProjectData({...editProjectData, desc: e.target.value})} /></div>
-                            <div><span className="text-xs font-bold text-gray-400">TAGS (comma separated)</span><input className="edit-input" value={Array.isArray(editProjectData.tags) ? editProjectData.tags.join(',') : editProjectData.tags} onChange={e => setEditProjectData({...editProjectData, tags: e.target.value.split(',')})} /></div>
+                            <div><span className="text-xs font-bold text-gray-400">TAGS</span><input className="edit-input" value={Array.isArray(editProjectData.tags) ? editProjectData.tags.join(',') : editProjectData.tags} onChange={e => setEditProjectData({...editProjectData, tags: e.target.value.split(',')})} /></div>
                              <div className="grid grid-cols-2 gap-4">
                                  <div onClick={() => coverInputRef.current.click()} className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50">{editProjectData.cover ? <img src={editProjectData.cover} className="h-full object-contain"/> : "Upload Cover"}</div><input type="file" ref={coverInputRef} className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'cover')} />
                                  <div onClick={() => mainFileInputRef.current.click()} className="h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:bg-gray-50">{editProjectData.file && editProjectData.file.length > 0 ? <span className="text-green-500 font-bold">{editProjectData.file.length} Files</span> : "Upload Files"}</div><input type="file" ref={mainFileInputRef} className="hidden" multiple accept="image/*,video/*,application/pdf" onChange={(e) => handleFileUpload(e, 'main')} />

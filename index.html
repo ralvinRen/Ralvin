@@ -310,8 +310,25 @@
                              {filteredProjects.map(p => (<div key={p.id} onClick={() => setSelectedProject(p)} className="flex flex-col gap-2"><div className="aspect-video bg-gray-200 rounded-lg overflow-hidden border border-gray-200"><img src={p.cover} className="w-full h-full object-cover" /></div><div className="text-xs font-bold truncate">{p.title}</div></div>))}
                         </div>
                         <div className="hidden md:flex flex-col h-full">
-                            <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8 border-b border-[#E5E5E5] overflow-hidden">
-                                {activeProject ? (activeProject.videoSrc ? <video src={activeProject.videoSrc} controls className="max-w-full max-h-full rounded shadow-lg" poster={activeProject.cover}></video> : <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain shadow-lg rounded" />) : <div className="text-gray-400">Select a project</div>}
+                            <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8 border-b border-[#E5E5E5] overflow-hidden relative group">
+                                {activeProject ? (
+                                    activeProject.videoSrc ? <video src={activeProject.videoSrc} controls className="max-w-full max-h-full rounded shadow-lg" poster={activeProject.cover}></video> :
+                                    <>
+                                        <img src={activeFiles[currentIndex]} className="max-w-full max-h-full object-contain shadow-lg rounded" />
+                                        {/* ✅ 修复：电脑端左右切换按钮 */}
+                                        {activeFiles.length > 1 && (
+                                            <>
+                                                <button className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-3 rounded-full text-black/50 hover:text-black backdrop-blur-sm transition opacity-0 group-hover:opacity-100" onClick={prevSlide}>
+                                                    <i className="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <button className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/50 p-3 rounded-full text-black/50 hover:text-black backdrop-blur-sm transition opacity-0 group-hover:opacity-100" onClick={nextSlide}>
+                                                    <i className="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                                <div className="absolute bottom-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition">{currentIndex + 1} / {activeFiles.length}</div>
+                                            </>
+                                        )}
+                                    </>
+                                ) : <div className="text-gray-400">Select a project</div>}
                             </div>
                             <div className="h-32 bg-white overflow-x-auto whitespace-nowrap p-4 flex gap-4 items-center shrink-0">
                                 {filteredProjects.map(p => (<div key={p.id} onClick={() => setSelectedProject(p)} className={`inline-block w-28 text-center cursor-pointer p-2 rounded-md transition-all ${activeProject && activeProject.id === p.id ? 'bg-[#E5F1FB]' : 'hover:bg-[#F5F5F5]'}`}><div className="w-20 h-16 mx-auto bg-gray-200 rounded overflow-hidden mb-1 relative border border-gray-300"><img src={p.cover} className="w-full h-full object-cover" /></div><div className="text-[10px] text-gray-700 truncate">{p.title}</div></div>))}
@@ -526,7 +543,7 @@
 
             return (
                 <div className="w-full h-screen wallpaper overflow-hidden relative font-[Inter]">
-                    {/* ✅ 修改点 2：顶部菜单栏左上角的文字已改为 RalvinRen */}
+                    {/* Top Bar - Z-Index FIXED */}
                     <div className="h-7 w-full glass-dark flex items-center justify-between px-4 text-xs font-medium absolute top-0 shadow-sm text-white/90 z-[9999]">
                         <div className="flex items-center gap-4"><i className="fa-brands fa-apple text-sm cursor-pointer hover:text-white" onClick={handleLogout}></i><span className="font-bold hidden md:inline">RalvinRen</span></div>
                         <div className="flex items-center gap-4">{isAdmin && <span className="bg-blue-500/80 px-2 rounded text-[10px]">Admin</span>}<i className="fa-solid fa-wifi"></i><span>{currentTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>

@@ -65,259 +65,10 @@
         const GITHUB_REPO = 'Ralvin';
         const GITHUB_FILE_PATH = 'data.json';
 
-        // ✅ 核心修复：使用最新的完整数据作为默认值 (解决 Loading 问题)
-        const DEFAULT_DATA = {
-            "user": {
-                "name": "Ren Jiaxuan",
-                "avatar": "profile.jpg",
-                "adminPassword": "ralvin",
-                "intro": "你好，我是任佳煊。一名追求“策创合一”的数字媒体艺术学生。我不仅擅长用画面讲故事（视频/设计），更热衷于挖掘品牌背后的策略支点。我拥有敏锐的 Z 世代洞察力，期待用灵感与逻辑为品牌创造价值。",
-                "skillsStrategy": [
-                    "品牌全案",
-                    "文案策划",
-                    "创意脚本",
-                    "竞品分析",
-                    "社媒运营"
-                ],
-                "skillsVisual": [
-                    "PS",
-                    "AI",
-                    "Premiere",
-                    "After Effects",
-                    "Figma"
-                ],
-                "honors": [
-                    {
-                        "title": "全国一等奖",
-                        "desc": "全国商科精英挑战赛会展策划赛道"
-                    },
-                    {
-                        "title": "全国三等奖",
-                        "desc": "第17届全国大学生广告艺术大赛 (视频类)"
-                    },
-                    {
-                        "title": "官方参赛认证",
-                        "desc": "L'Oréal Brandstorm 2025"
-                    },
-                    {
-                        "title": "省级一等奖",
-                        "desc": "第13届浙江省大学生广告创意设计大赛"
-                    }
-                ],
-                "email": "1627716641@qq.com",
-                "phone": "195 4899 4021",
-                "school": "浙江师范大学 | 数字媒体艺术",
-                "gpa": "3.92 (Top 3%)",
-                "english": "CET-6 550+ | 雅思 6.5",
-                "exchange": "延世大学 (2025 Summer)",
-                "resumeFile": "任_佳煊_125515171091.pdf"
-            },
-            "projects": [
-                {
-                    "id": "s1",
-                    "mainCat": "Brand Strategy",
-                    "subCat": "品牌全案",
-                    "title": "赤尾：顺滑到位",
-                    "file": [
-                        "zioxx-video.mp4"
-                    ],
-                    "cover": "zioxx-video-cover.png",
-                    "videoSrc": "zioxx-video.mp4",
-                    "desc": "摒弃传统说教，用“双人舞步”隐喻亲密关系。设计“丝滑换装”转场。",
-                    "tags": [
-                        "大广赛三等奖",
-                        "视频策划"
-                    ]
-                },
-                {
-                    "id": "s2",
-                    "mainCat": "Brand Strategy",
-                    "subCat": "商赛",
-                    "title": "L'Oréal Brandstorm",
-                    "file": [
-                        "loreal.mp4"
-                    ],
-                    "cover": "loreal_cover.jpg",
-                    "videoSrc": "loreal.mp4",
-                    "desc": "提出 TerraGuard 智能剃须生态系统。负责全英文 Pitch Deck。",
-                    "tags": [
-                        "官方认证",
-                        "CSR策略"
-                    ]
-                },
-                {
-                    "id": "s3",
-                    "mainCat": "Brand Strategy",
-                    "subCat": "品牌全案",
-                    "title": "赤尾品牌手册",
-                    "file": [
-                        "zioxx-pitch_cover.png"
-                    ],
-                    "cover": "zioxx-pitch_cover.png",
-                    "desc": "针对 Z 世代设计的品牌手册封面。",
-                    "tags": [
-                        "品牌设计",
-                        "Z世代"
-                    ]
-                },
-                {
-                    "id": "a1",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "影像",
-                    "title": "Pop Mart：逃离拥挤",
-                    "file": [
-                        "pop mart-TVC.mp4"
-                    ],
-                    "cover": "popmart_cover.jpg",
-                    "videoSrc": "pop mart-TVC.mp4",
-                    "desc": "洞察都市焦虑，以耳机为媒介，通过镜头语言完成现实与幻想的切换。",
-                    "tags": [
-                        "浙江省三等奖",
-                        "情绪叙事"
-                    ]
-                },
-                {
-                    "id": "a2",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "影像",
-                    "title": "Are You Lost",
-                    "file": [
-                        "are you lost.mp4"
-                    ],
-                    "cover": "lost_cover.jpg",
-                    "videoSrc": "are you lost.mp4",
-                    "desc": "一部探索自我迷失与寻找的实验短片。",
-                    "tags": [
-                        "实验影像",
-                        "拼贴动画"
-                    ]
-                },
-                {
-                    "id": "a3",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "影像",
-                    "title": "养元青：大风吹不去",
-                    "file": [
-                        "Yangyuanqing-video.mp4"
-                    ],
-                    "cover": "yang_cover.jpg",
-                    "videoSrc": "Yangyuanqing-video.mp4",
-                    "desc": "运用视觉通感，将“发根”比作“墙上海报”。",
-                    "tags": [
-                        "视觉隐喻",
-                        "定格动画"
-                    ]
-                },
-                {
-                    "id": "a4",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "文创设计",
-                    "title": "扬州文人茶",
-                    "file": [
-                        "Yangzhoutea2.jpg",
-                        "Yangzhoutea1.jpg",
-                        "Yangzhoutea3.jpg",
-                        "Yangzhoutea4.jpg"
-                    ],
-                    "cover": "Yangzhoutea2.jpg",
-                    "desc": "挖掘“扬州八怪”文化IP，提炼水墨元素，确立“新中式文人茶”调性。",
-                    "tags": [
-                        "包装设计",
-                        "国潮"
-                    ]
-                },
-                {
-                    "id": "a5",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "插画",
-                    "title": "客家食养",
-                    "file": [
-                        "hakka1.jpg",
-                        "hakka2.jpg",
-                        "hakka3.jpg",
-                        "hakka4.jpg"
-                    ],
-                    "cover": "hakka1.jpg",
-                    "desc": "基于客家“顺时而食”智慧，将特色美食与节气结合。",
-                    "tags": [
-                        "插画设计",
-                        "文创"
-                    ]
-                },
-                {
-                    "id": "a6",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "海报",
-                    "title": "营养快线海报",
-                    "file": [
-                        "nutri-express-poster1.jpg",
-                        "nutri-express-poster2.jpg",
-                        "nutri-express-poster3.jpg"
-                    ],
-                    "cover": "nutri-express-poster1.jpg",
-                    "desc": "利用 C4D 构建超现实场景，生动展现产品核心卖点。",
-                    "tags": [
-                        "C4D",
-                        "海报"
-                    ]
-                },
-                {
-                    "id": "a7",
-                    "mainCat": "Artistic Expression",
-                    "subCat": "AIGC",
-                    "title": "器·观：AIGC系列",
-                    "file": [
-                        "grassland-liver.jpg",
-                        "lake-pancreas.jpg",
-                        "ocean-heart.jpg",
-                        "rainforest-stomach.jpg",
-                        "river-kidneys.jpg",
-                        "wetland-lung.jpg"
-                    ],
-                    "cover": "grassland-liver.jpg",
-                    "desc": "利用 AIGC 将人体器官创意化为自然地貌。",
-                    "tags": [
-                        "Midjourney",
-                        "创意合成"
-                    ]
-                }
-            ],
-            "categories": [
-                {
-                    "id": "cat1",
-                    "name": "Brand Strategy",
-                    "subs": [
-                        "品牌全案",
-                        "视频策划",
-                        "商赛"
-                    ]
-                },
-                {
-                    "id": "cat2",
-                    "name": "Artistic Expression",
-                    "subs": [
-                        "影像",
-                        "插画",
-                        "海报",
-                        "文创设计",
-                        "AIGC"
-                    ]
-                }
-            ],
-            "events": {
-                "2025-05-28": {
-                    "title": "欧莱雅商赛",
-                    "type": "competition",
-                    "desc": "完成了全英文 Pitch！值了。✨",
-                    "image": null
-                },
-                "2025-06-10": {
-                    "title": "大广赛获奖",
-                    "type": "award",
-                    "desc": "赤尾视频拿到了全国三等奖！🎬",
-                    "image": null
-                }
-            }
+        // Default Data (Prevent white screen)
+        const DEFAULT_DATA = { 
+            user: { name: "Loading...", avatar: "profile.jpg", adminPassword: "ralvin", intro: "Connecting...", skillsStrategy: [], skillsVisual: [], honors: [] },
+            categories: [], projects: [], events: {}
         };
 
         const APPS = [
@@ -328,9 +79,62 @@
             { id: 'mail', name: 'Contact', icon: 'fa-regular fa-envelope', color: 'bg-green-500', title: 'Contact Me' },
         ];
 
-        const useIsMobile = () => { const [e,t]=useState(window.innerWidth<768); return useEffect((()=>{const e=()=>t(window.innerWidth<768);return window.addEventListener("resize",e),()=>window.removeEventListener("resize",e)}),[]),e };
-        const GenericIcon = ({app:e})=>(<div className={`w-full h-full ${e.color} rounded-[22%] flex items-center justify-center text-white app-icon relative overflow-hidden border border-white/10 shadow-md`}>"calendar"===e.id?<div className="w-full h-full bg-white flex flex-col items-center"><div className="h-[25%] w-full bg-red-500"/><div className="flex-1 flex flex-col items-center justify-center"><span className="text-black font-bold text-xl leading-none">{new Date().getDate()}</span></div></div>:<><div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent pointer-events-none"/><i className={`${e.icon} text-3xl text-white drop-shadow-md`}/></>}</div>);
-        const HomeApp = ({user:e,openApp:t})=>(<div className="h-full w-full bg-slate-50 relative overflow-y-auto flex flex-col items-center p-8"><div className="relative z-10 max-w-4xl w-full text-center mt-10"><div className="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 mb-6 shadow-xl"><div className="w-full h-full rounded-full border-4 border-white overflow-hidden bg-white"><img src={e.avatar} className="w-full h-full object-cover"/></div></div><h1 className="text-4xl font-bold text-gray-800 mb-2">Hello, {e.name}!</h1><p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">{e.intro}</p><div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div onClick={()=>t("resume")} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60"><i className="fa-regular fa-id-card text-3xl text-blue-500 mb-2"/><h3 className="font-bold">Resume</h3></div><div onClick={()=>t("portfolio")} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60"><i className="fa-solid fa-layer-group text-3xl text-purple-500 mb-2"/><h3 className="font-bold">Portfolio</h3></div><div onClick={()=>t("mail")} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60"><i className="fa-regular fa-paper-plane text-3xl text-green-500 mb-2"/><h3 className="font-bold">Contact</h3></div></div></div></div>);
+        const useIsMobile = () => {
+            const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+            useEffect(() => {
+                const handleResize = () => setIsMobile(window.innerWidth < 768);
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+            return isMobile;
+        };
+
+        // ✅ 修复点：完整的 GenericIcon 组件，解决图标乱码
+        const GenericIcon = ({ app }) => (
+            <div className={`w-full h-full ${app.color} rounded-[22%] flex items-center justify-center text-white app-icon relative overflow-hidden border border-white/10 shadow-md`}>
+                {app.id === 'calendar' ? (
+                    <div className="w-full h-full bg-white flex flex-col items-center">
+                        <div className="h-[25%] w-full bg-red-500"></div>
+                        <div className="flex-1 flex flex-col items-center justify-center">
+                            <span className="text-black font-bold text-xl leading-none">{new Date().getDate()}</span>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent pointer-events-none"></div>
+                        <i className={`${app.icon} text-3xl text-white drop-shadow-md`}></i>
+                    </>
+                )}
+            </div>
+        );
+
+        const HomeApp = ({ user, openApp }) => (
+            <div className="h-full w-full bg-slate-50 relative overflow-y-auto flex flex-col items-center p-8">
+                <div className="relative z-10 max-w-4xl w-full text-center mt-10">
+                    <div className="w-32 h-32 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 mb-6 shadow-xl">
+                        <div className="w-full h-full rounded-full border-4 border-white overflow-hidden bg-white">
+                            <img src={user.avatar} className="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">Hello, {user.name}!</h1>
+                    <p className="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">{user.intro}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div onClick={() => openApp('resume')} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60">
+                            <i className="fa-regular fa-id-card text-3xl text-blue-500 mb-2"></i>
+                            <h3 className="font-bold">Resume</h3>
+                        </div>
+                        <div onClick={() => openApp('portfolio')} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60">
+                            <i className="fa-solid fa-layer-group text-3xl text-purple-500 mb-2"></i>
+                            <h3 className="font-bold">Portfolio</h3>
+                        </div>
+                        <div onClick={() => openApp('mail')} className="glass-panel p-6 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer bg-white/60">
+                            <i className="fa-regular fa-paper-plane text-3xl text-green-500 mb-2"></i>
+                            <h3 className="font-bold">Contact</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
 
         const ResumeApp = ({ isAdmin, user, onUpdateUser }) => {
             const [isEditing, setIsEditing] = useState(false);
@@ -388,7 +192,6 @@
             const [currentIndex, setCurrentIndex] = useState(0);
             const coverInputRef = useRef(null);
             const mainFileInputRef = useRef(null);
-            const projectListRef = useRef(null); 
 
             const filteredProjects = projects.filter(p => {
                 if (mainCat !== 'All' && p.mainCat !== mainCat) return false;
@@ -396,16 +199,7 @@
                 return true;
             });
 
-            useEffect(() => { 
-                if (!isMobile && filteredProjects.length > 0) { 
-                    setSelectedProject(filteredProjects[0]); 
-                } else if (!isMobile) { 
-                    setSelectedProject(null); 
-                } 
-                if(projectListRef.current) {
-                    projectListRef.current.scrollLeft = 0;
-                }
-            }, [mainCat, subCat]);
+            useEffect(() => { if (!isMobile && filteredProjects.length > 0) { setSelectedProject(filteredProjects[0]); } else if (!isMobile) { setSelectedProject(null); } }, [mainCat, subCat]);
 
             const activeProject = selectedProject || (isMobile ? null : filteredProjects[0]);
             const activeFiles = activeProject ? (Array.isArray(activeProject.file) ? activeProject.file : [activeProject.file]) : [];
@@ -541,3 +335,159 @@
                 </div>
             );
         };
+
+        const CalendarApp = ({ isAdmin, events, onUpdateEvents }) => {
+            const [currentMonth, setCurrentMonth] = useState(new Date());
+            const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+            const [isEditing, setIsEditing] = useState(false);
+            const [form, setForm] = useState({ title: '', desc: '', image: null });
+            const [saving, setSaving] = useState(false);
+            const fileInputRef = useRef(null);
+
+            const getMonthData = (date) => {
+                const year = date.getFullYear(); const month = date.getMonth(); const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+                let days = []; for(let i=0; i<firstDay; i++) days.push(null); for(let i=1; i<=daysInMonth; i++) { const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; days.push({ day: i, fullDate: dStr, hasEvent: events[dStr] }); } return days;
+            };
+            const days = getMonthData(currentMonth);
+            const currentEvent = events[selectedDate];
+            const changeMonth = (delta) => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + delta, 1));
+
+            useEffect(() => { setIsEditing(false); if (currentEvent) { setForm({ title: currentEvent.title, desc: currentEvent.desc, image: currentEvent.image }); } else { setForm({ title: '', desc: '', image: null }); } }, [selectedDate, events]);
+            const handleSave = async () => { setSaving(true); const newEvents = { ...events, [selectedDate]: { ...form, type: 'life' } }; await onUpdateEvents(newEvents); setSaving(false); setIsEditing(false); };
+            const handleImageUpload = (e) => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onloadend = () => setForm({ ...form, image: reader.result }); reader.readAsDataURL(file); } };
+
+            return (
+                <div className="flex flex-col md:flex-row h-full bg-white">
+                    <div className="flex-1 p-4 md:p-8 flex flex-col border-b md:border-r border-gray-200 overflow-y-auto">
+                        <div className="flex justify-between items-center mb-4 md:mb-6 shrink-0"><button onClick={() => changeMonth(-1)} className="p-2 hover:bg-gray-100 rounded"><i className="fa-solid fa-chevron-left"></i></button><h2 className="text-lg md:text-xl font-bold text-red-500">{currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h2><button onClick={() => changeMonth(1)} className="p-2 hover:bg-gray-100 rounded"><i className="fa-solid fa-chevron-right"></i></button></div>
+                        <div className="grid grid-cols-7 mb-2 text-xs font-bold text-gray-400 uppercase text-center shrink-0"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+                        <div className="grid grid-cols-7 gap-px bg-gray-200 border border-gray-200 auto-rows-fr">{days.map((day, idx) => (<div key={idx} onClick={() => day && setSelectedDate(day.fullDate)} className={`bg-white min-h-[50px] md:min-h-[80px] p-1 md:p-2 cursor-pointer transition hover:bg-gray-50 relative ${!day ? 'bg-gray-50 cursor-default' : ''} ${day && selectedDate === day.fullDate ? 'ring-2 ring-inset ring-blue-400 z-10' : ''}`}>{day && <><span className={`inline-block w-5 h-5 md:w-6 md:h-6 text-center leading-5 md:leading-6 rounded-full text-xs md:text-sm ${day.fullDate === new Date().toISOString().split('T')[0] ? 'bg-red-500 text-white' : ''}`}>{day.day}</span>{day.hasEvent && <div className="mt-1 flex justify-center md:justify-start"><div className="w-1.5 h-1.5 rounded-full bg-blue-500 mb-1"></div><div className="hidden md:block text-[10px] text-gray-500 truncate leading-tight ml-1">{day.hasEvent.title}</div></div>}</>}</div>))}</div>
+                    </div>
+                    <div className="w-full md:w-96 h-1/2 md:h-auto bg-[#F9FAFB] p-6 md:p-8 flex flex-col overflow-y-auto shrink-0">
+                        <div className="text-xl md:text-2xl font-light text-gray-400 mb-4 md:mb-6 border-b pb-4 shrink-0">{selectedDate}</div>
+                        {isEditing ? (
+                            <div className="flex flex-col gap-3 h-full animate-fade-in"><input className="edit-input font-bold text-lg" placeholder="Title..." value={form.title} onChange={e => setForm({...form, title: e.target.value})} /><textarea className="edit-textarea flex-1" placeholder="Write something..." value={form.desc} onChange={e => setForm({...form, desc: e.target.value})}></textarea><div className="h-24 md:h-32 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 relative overflow-hidden shrink-0" onClick={() => fileInputRef.current.click()}>{form.image ? <img src={form.image} className="w-full h-full object-cover" /> : <span className="text-gray-400 text-sm"><i className="fa-solid fa-image mr-2"></i> Add Photo</span>}<input type="file" ref={fileInputRef} className="hidden" onChange={handleImageUpload} /></div><div className="flex gap-2 mt-auto shrink-0"><button onClick={handleSave} disabled={saving} className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition disabled:bg-gray-400">{saving?'Saving':'Save Cloud'}</button><button onClick={() => setIsEditing(false)} className="px-4 py-2 text-gray-500 hover:text-gray-700">Cancel</button></div></div>
+                        ) : (
+                            <>
+                                {currentEvent ? (<div className="animate-fade-in h-full flex flex-col"><h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-gray-800">{currentEvent.title}</h3>{currentEvent.image && <div className="w-full h-32 md:h-48 rounded-lg overflow-hidden mb-4 shadow-sm border border-gray-200 shrink-0"><img src={currentEvent.image} className="w-full h-full object-cover" /></div>}<div className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex-1 overflow-y-auto">{currentEvent.desc}</div>{isAdmin && <button onClick={() => setIsEditing(true)} className="mt-4 md:mt-6 w-full border border-gray-300 text-gray-600 py-2 rounded hover:bg-white transition shrink-0">Edit Entry</button>}</div>) : (<div className="flex-1 flex flex-col items-center justify-center text-center text-gray-400"><div className="text-3xl md:text-4xl mb-4">🍃</div><p className="text-sm">No memories here yet.</p>{isAdmin && <button onClick={() => setIsEditing(true)} className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition text-sm">+ Add New Entry</button>}</div>)}
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const MacOS = () => {
+            const [locked, setLocked] = useState(true);
+            const [booting, setBooting] = useState(false);
+            const [currentTime, setCurrentTime] = useState(new Date());
+            const [windows, setWindows] = useState([]);
+            const [activeWindowId, setActiveWindowId] = useState(null);
+            const [isAdmin, setIsAdmin] = useState(false);
+            const [passwordInput, setPasswordInput] = useState("");
+            const [errorMsg, setErrorMsg] = useState("");
+            const isMobile = useIsMobile();
+
+            const [userData, setUserData] = useState(DEFAULT_DATA.user);
+            const [projectData, setProjectData] = useState(DEFAULT_DATA.projects);
+            const [eventData, setEventData] = useState(DEFAULT_DATA.events);
+            const [categories, setCategories] = useState(DEFAULT_DATA.categories);
+
+            // 加载时：直接读取 GitHub Raw
+            useEffect(() => {
+                fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_FILE_PATH}?t=${Date.now()}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        console.log("Loaded from GitHub");
+                        if(data.user) setUserData(prev => ({...prev, ...data.user}));
+                        if(data.projects) setProjectData(data.projects);
+                        if(data.categories) setCategories(data.categories);
+                        if(data.events) setEventData(data.events);
+                    })
+                    .catch(e => console.error("Load failed, using defaults", e));
+            }, []);
+
+            useEffect(() => { const t = setInterval(() => setCurrentTime(new Date()), 1000); return () => clearInterval(t); }, []);
+            
+            const handleLogin = () => {
+                if (passwordInput === userData.adminPassword) { setBooting(true); setTimeout(() => { setLocked(false); setIsAdmin(true); if(!isMobile) openApp('home'); }, 800); } 
+                else if (passwordInput === "") { setBooting(true); setTimeout(() => { setLocked(false); setIsAdmin(false); if(!isMobile) openApp('home'); }, 800); } 
+                else { setErrorMsg("Wrong Password"); }
+            };
+            
+            const handleLogout = () => { setWindows([]); setLocked(true); setBooting(false); setPasswordInput(""); setIsAdmin(false); };
+
+            const openApp = (appId) => {
+                const app = APPS.find(a => a.id === appId);
+                if (isMobile) { setWindows([{ id: appId, title: app.title, app: app, x: 0, y: 0, width: '100%', height: '100%', zIndex: 100, minimized: false, maximized: true }]); setActiveWindowId(appId); return; }
+                if (windows.find(w => w.id === appId)) { setWindows(prev => prev.map(w => w.id === appId ? { ...w, minimized: false, zIndex: Date.now() } : w)); setActiveWindowId(appId); } 
+                else { const width = 1000; const height = 650; const newWin = { id: appId, title: app.title, app: app, x: Math.max(20, (window.innerWidth - width) / 2), y: Math.max(40, (window.innerHeight - height) / 2), width, height, zIndex: Date.now(), minimized: false, maximized: false }; setWindows([...windows, newWin]); setActiveWindowId(appId); }
+            };
+
+            const closeWindow = (id) => setWindows(windows.filter(w => w.id !== id));
+            const focusWindow = (id) => { setActiveWindowId(id); setWindows(windows.map(w => w.id === id ? { ...w, zIndex: Date.now() } : w)); };
+            const toggleMaximize = (id) => setWindows(windows.map(w => w.id === id ? { ...w, maximized: !w.maximized, x: !w.maximized ? 0 : 50, y: !w.maximized ? 32 : 50, width: !w.maximized ? window.innerWidth : 1000, height: !w.maximized ? window.innerHeight - 80 : 650 } : w));
+
+            const dragItem = useRef(null); const dragStartPos = useRef(null); const resizeItem = useRef(null);
+            const handleMouseMove = useCallback((e) => {
+                if (dragItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === dragItem.current ? { ...w, x: dragStartPos.current.winX + dx, y: dragStartPos.current.winY + dy } : w)); } 
+                else if (resizeItem.current) { e.preventDefault(); const dx = e.clientX - dragStartPos.current.mouseX; const dy = e.clientY - dragStartPos.current.mouseY; setWindows(prev => prev.map(w => w.id === resizeItem.current ? { ...w, width: Math.max(400, dragStartPos.current.w + dx), height: Math.max(300, dragStartPos.current.h + dy) } : w)); }
+            }, []);
+            const handleMouseUp = useCallback(() => { dragItem.current = null; resizeItem.current = null; }, []);
+            useEffect(() => { document.addEventListener('mousemove', handleMouseMove); document.addEventListener('mouseup', handleMouseUp); return () => { document.removeEventListener('mousemove', handleMouseMove); document.removeEventListener('mouseup', handleMouseUp); }; }, [handleMouseMove, handleMouseUp]);
+
+            const onTitleMouseDown = (e, id) => { const win = windows.find(w => w.id === id); if (win.maximized) return; focusWindow(id); dragItem.current = id; dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, winX: win.x, winY: win.y }; };
+            const onResizeMouseDown = (e, id) => { e.stopPropagation(); resizeItem.current = id; const win = windows.find(w => w.id === id); dragStartPos.current = { mouseX: e.clientX, mouseY: e.clientY, w: win.width, h: win.height }; };
+
+            // --- 核心：通过 Netlify Function 更新 GitHub ---
+            const updateCloud = async (newData) => {
+                const fullData = { user: userData, projects: projectData, categories: categories, events: eventData, ...newData };
+                
+                // 1. 获取 GitHub 文件的最新 SHA (防止冲突)
+                let sha = "";
+                try {
+                    const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`);
+                    const shaJson = await shaRes.json();
+                    sha = shaJson.sha;
+                } catch(e) {
+                    console.error("Failed to get SHA", e);
+                }
+
+                try {
+                    const res = await fetch('/.netlify/functions/update', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            content: btoa(unescape(encodeURIComponent(JSON.stringify(fullData, null, 4)))),
+                            password: passwordInput, // 密码校验
+                            sha: sha // 传递 SHA
+                        })
+                    });
+
+                    const json = await res.json();
+                    
+                    if (res.ok) {
+                        alert("✅ Saved! GitHub updated. Changes live in ~1 min.");
+                    } else {
+                        alert("❌ Error: " + json.message);
+                    }
+                } catch (e) {
+                    alert("Network Error: " + e.message);
+                }
+            };
+
+            const updateUser = (newData) => { setUserData(newData); updateCloud({ user: newData }); };
+            const updateProjects = (newData) => { setProjectData(newData); updateCloud({ projects: newData }); };
+            const updateEvents = (newData) => { setEventData(newData); updateCloud({ events: newData }); };
+            const updateCategories = (newData) => { setCategories(newData); updateCloud({ categories: newData }); };
+
+            if (locked) { return ( <div className="w-full h-screen lockscreen-bg flex flex-col items-center pt-20 md:pt-32 transition-transform duration-700 ease-in-out" style={{ transform: booting ? 'translateY(-100%)' : 'translateY(0)' }}> <div className="text-white text-center drop-shadow-xl mb-12"><div className="text-6xl md:text-[100px] font-thin leading-none tracking-tight">{currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false })}</div><div className="text-xl md:text-2xl font-normal opacity-90">{currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div></div> <div className="flex flex-col items-center animate-fade-in mt-4 md:mt-10"> <img src={userData.avatar} className="w-20 h-20 md:w-24 md:h-24 rounded-full mb-6 shadow-2xl object-cover object-top ring-2 ring-white/20" /> <h2 className="text-white text-xl font-semibold mb-6">{userData.name}</h2> <div className="relative"><input type="password" placeholder="Enter Password" value={passwordInput} onChange={(e)=>setPasswordInput(e.target.value)} className="w-48 bg-white/20 border-0 rounded-full px-4 py-1.5 text-white text-center backdrop-blur-md focus:bg-white/30" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} /><button onClick={handleLogin} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/70"><i className="fa-solid fa-arrow-right"></i></button></div> <p className="text-white/40 text-[10px] mt-4 uppercase cursor-pointer" onClick={() => { setPasswordInput(""); handleLogin(); }}>Click for Guest Mode</p> {errorMsg && <p className="text-red-400 text-xs mt-2">{errorMsg}</p>} </div> </div> ); }
+
+            return ( <div className="w-full h-screen wallpaper overflow-hidden relative font-[Inter]"> <div className="h-7 w-full glass-dark flex items-center justify-between px-4 text-xs font-medium absolute top-0 shadow-sm text-white/90 z-[9999]"> <div className="flex items-center gap-4"><i className="fa-brands fa-apple text-sm cursor-pointer hover:text-white" onClick={handleLogout}></i><span className="font-bold hidden md:inline">RalvinRen</span></div> <div className="flex items-center gap-4">{isAdmin && <span className="bg-blue-500/80 px-2 rounded text-[10px]">Admin</span>}<i className="fa-solid fa-wifi"></i><span>{currentTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div> </div> <div className="absolute top-10 right-4 flex-col gap-4 items-end z-0 hidden md:flex"> {APPS.map((app) => ( <div key={app.id} onDoubleClick={() => openApp(app.id)} className="desktop-icon"> <GenericIcon app={app} /> <span className="text-white text-xs font-medium drop-shadow-md bg-black/20 px-2 rounded mt-1">{app.name}</span> </div> ))} </div> {windows.map(win => ( <div key={win.id} className={`absolute overflow-hidden glass shadow-mac-window flex flex-col animate-scale-up ${win.minimized ? 'hidden' : ''}`} style={{ left: win.x, top: win.y, width: win.width, height: win.height, zIndex: win.zIndex, borderRadius: isMobile ? 0 : '12px' }} onMouseDown={() => focusWindow(win.id)}> <div className={`h-12 md:h-8 bg-[#E3E3E3] border-b border-[#D1D1D1] flex items-center px-4 md:px-3 gap-2 backdrop-blur-xl ${isMobile ? 'pt-7' : ''}`} onMouseDown={(e) => onTitleMouseDown(e, win.id)}> <div className="flex gap-2"> <div onClick={(e) => {e.stopPropagation(); closeWindow(win.id)}} className="w-3 h-3 md:w-3 md:h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] cursor-pointer"></div> {!isMobile && <div onClick={(e) => {e.stopPropagation(); toggleMaximize(win.id)}} className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] cursor-pointer"></div>} </div> <div className="flex-1 text-center text-sm md:text-xs font-bold text-gray-500/80 pointer-events-none">{win.title}</div> {isMobile && <div className="w-10"></div>} </div> <div className="flex-1 overflow-hidden relative bg-white"> {win.id === 'home' ? <HomeApp user={userData} openApp={openApp} /> : win.id === 'resume' ? <ResumeApp isAdmin={isAdmin} user={userData} onUpdateUser={updateUser} /> : win.id === 'portfolio' ? <PortfolioApp isAdmin={isAdmin} projects={projectData} onUpdateProjects={updateProjects} categories={categories} onUpdateCategories={updateCategories} /> : win.id === 'calendar' ? <CalendarApp isAdmin={isAdmin} events={eventData} onUpdateEvents={updateEvents} /> : <MailApp user={userData} />} </div> {!win.maximized && <div className="resize-handle" onMouseDown={(e) => onResizeMouseDown(e, win.id)}></div>} </div> ))} <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass px-3 pb-3 pt-3 rounded-2xl flex items-end gap-3 md:gap-4 shadow-mac-dock z-[100] border border-white/20 w-[90%] md:w-auto justify-between md:justify-center overflow-x-auto"> {APPS.map(app => (<div key={app.id} onClick={() => openApp(app.id)} className="group relative flex flex-col items-center transition hover:-translate-y-2 cursor-pointer shrink-0 w-12 h-12 md:w-16 md:h-16"><GenericIcon app={app} />{windows.find(w => w.id === app.id) && <div className="w-1 h-1 bg-black/50 rounded-full mt-1"></div>}</div>))} </div> </div> );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MacOS />);
+    </script>
+</body>
+</html>

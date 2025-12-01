@@ -199,14 +199,19 @@
             "mainCat": "Artistic Expression",
             "subCat": "海报",
             "title": " 《喝营养快线，营养立现》",
-            "file": [],
+            "file": [
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580386620-nutri-express-poster3.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580386469-nutri-express-poster1.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580386457-nutri-express-poster2.jpg"
+            ],
             "cover": "nutri-express-poster1.jpg",
             "desc": "这件作品以营养快线名称本身为创意中心，联想出“专线”、“热线”、“底线”等词汇，并将其具象化为列车、电话和天平等形象。海报口号为：“想要变营养，乘坐营养专线“；”想要变营养，拨打营养热线“；”想要变营养，守住营养底线“。这不仅阐述了营养快线带给人们健康和营养的效益，同时也与创意点完美契合。",
             "tags": [
                 "娃哈哈",
                 "营养快线",
                 "创意海报"
-            ]
+            ],
+            "isPdf": false
         },
         {
             "id": "a7",

@@ -48,7 +48,7 @@
         {
             "id": "s1",
             "mainCat": "Brand Strategy",
-            "subCat": "品牌全案",
+            "subCat": "视频策划",
             "title": "赤尾：顺滑到位",
             "file": [],
             "cover": "zioxx-video-cover.png",
@@ -151,7 +151,7 @@
         {
             "id": "a5",
             "mainCat": "Artistic Expression",
-            "subCat": "插画",
+            "subCat": "文创设计",
             "title": "基于客家顺时食养传统的创新设计",
             "file": [],
             "cover": "hakka1.jpg",
@@ -179,7 +179,7 @@
         {
             "id": "a7",
             "mainCat": "Artistic Expression",
-            "subCat": "AIGC",
+            "subCat": "影像",
             "title": "器·观",
             "file": [],
             "cover": "grassland-liver.jpg",
@@ -210,7 +210,6 @@
                 "插画",
                 "海报",
                 "文创设计",
-                "AIGC"
             ]
         }
     ],
@@ -229,3 +228,4 @@
         }
     }
 }
+

@@ -172,13 +172,19 @@
             "mainCat": "Artistic Expression",
             "subCat": "文创设计",
             "title": "扬州文人茶——基于“扬州八怪”本土文化资源的茶文化包装及文创设计",
-            "file": [],
+            "file": [
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580409705-Yangzhoutea1.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580409698-Yangzhoutea4.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580409701-Yangzhoutea3.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580409686-Yangzhoutea2.jpg"
+            ],
             "cover": "Yangzhoutea2.jpg",
             "desc": "本作品立足于扬州深厚的茶文化底蕴，深入挖掘“扬州八怪”书画名家的艺术意趣，旨在创设一个兼具历史文脉与现代审美的“扬州文人茶”主题品牌 。设计通过探赜古代扬州文人的茶事活动，将传统文化资源转化为可视化的现代视觉符号，致力于让茶叶包装成为传递扬州文脉与茶韵的移动载体 。",
             "tags": [
                 "包装设计",
                 "扬州茶叶"
-            ]
+            ],
+            "isPdf": false
         },
         {
             "id": "a5",

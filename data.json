@@ -273,10 +273,15 @@
             "mainCat": "Brand Strategy",
             "subCat": "商赛",
             "title": "L'Oréal Brandstorm-video",
-            "desc": "",
+            "desc": "提出 TerraGuard 智能剃须生态系统：它通过一款搭载皮肤检测功能的智能剃须刀（硬件）连接专属 APP 社区（软件），旨在打破男性护肤的心理壁垒，同时通过“以旧换新”和“种树”机制，将个人护肤与地球生态修复紧密结合 。",
             "tags": [],
-            "file": [],
-            "cover": "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580779494-{TERRAGUARD-PITCH}_00.png"
+            "file": [
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580806783-{TERRAGUARD-PITCH}_00.png",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580806730-{TERRAGUARD-PITCH}_01.png",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580806805-{TERRAGUARD-PITCH}_02.png"
+            ],
+            "cover": "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580779494-{TERRAGUARD-PITCH}_00.png",
+            "isPdf": false
         }
     ],
     "categories": [

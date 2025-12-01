@@ -151,7 +151,7 @@
         {
             "id": "a5",
             "mainCat": "Artistic Expression",
-            "subCat": "插画",
+            "subCat": "文创设计",
             "title": "基于客家顺时食养传统的创新设计",
             "file": [],
             "cover": "hakka1.jpg",
@@ -209,8 +209,7 @@
                 "影像",
                 "插画",
                 "海报",
-                "文创设计",
-                "AIGC"
+                "文创设计"
             ]
         }
     ],

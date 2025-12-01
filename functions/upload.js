@@ -28,3 +28,4 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }
 }
+// Final binding test: Dec 1st

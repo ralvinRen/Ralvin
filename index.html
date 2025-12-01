@@ -215,19 +215,60 @@
             };
             const handleDeleteProject = () => { if(confirm("Delete?")) { onUpdateProjects(projects.filter(p => p.id !== editProjectData.id)); setIsEditingMode(false); setEditProjectData(null); setSelectedProject(null); } };
 
-            const handleFileUpload = (e, type) => {
+           // --- 全新的自动上传到 R2 函数 ---
+            const handleFileUpload = async (e, type) => {
                 const files = Array.from(e.target.files);
-                if (files.length > 0) {
-                    if (type === 'main') {
-                        const readers = files.map(file => new Promise((resolve) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.readAsDataURL(file); }));
-                        Promise.all(readers).then(results => {
-                            const isVideo = files[0].type.startsWith('video/');
-                            const isPdf = files[0].type === 'application/pdf'; 
-                            setEditProjectData(prev => ({ ...prev, file: results, videoSrc: isVideo ? results[0] : null, isPdf: isPdf }));
+                if (files.length === 0) return;
+
+                // 简单的提示
+                const originalText = e.target.parentElement.innerText;
+                e.target.parentElement.innerText = "上传中...";
+                // 也可以用 alert("正在上传到云端，请稍等..."); 
+
+                try {
+                    const uploadPromises = files.map(async (file) => {
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        // 调用 upload.js
+                        const res = await fetch('/upload', {
+                            method: 'POST',
+                            body: formData
                         });
+
+                        if (!res.ok) throw new Error('Upload failed');
+                        const data = await res.json();
+                        return data.url; // 拿到 R2 返回的链接
+                    });
+
+                    const uploadedUrls = await Promise.all(uploadPromises);
+
+                    // 更新数据 (存的是链接！)
+                    if (type === 'main') {
+                        const isVideo = files[0].type.startsWith('video/');
+                        // 简单的判断 PDF (可选)
+                        const isPdf = files[0].type === 'application/pdf';
+                        
+                        setEditProjectData(prev => ({ 
+                            ...prev, 
+                            file: uploadedUrls, 
+                            videoSrc: isVideo ? uploadedUrls[0] : prev.videoSrc,
+                            isPdf: isPdf
+                        }));
                     } else {
-                        const reader = new FileReader(); reader.onloadend = () => setEditProjectData(prev => ({ ...prev, cover: reader.result })); reader.readAsDataURL(files[0]);
+                        setEditProjectData(prev => ({ 
+                            ...prev, 
+                            cover: uploadedUrls[0] 
+                        }));
                     }
+                    
+                    alert("✅ 上传成功！");
+
+                } catch (error) {
+                    console.error(error);
+                    alert("❌ 上传失败，请检查网络。");
+                } finally {
+                    e.target.parentElement.innerText = originalText; // 恢复按钮文字
                 }
             };
 
@@ -537,4 +578,5 @@
 
 </html>
 // fix contact
+
 

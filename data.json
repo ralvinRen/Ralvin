@@ -265,8 +265,18 @@
                 "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650675-Water_Town_Living_Room3.jpg",
                 "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650080-Water_Town_Living_Room2.jpg"
             ],
-            "cover": "",
+            "cover": "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580724579-Water_Town_Living_Room1.jpg",
             "isPdf": false
+        },
+        {
+            "id": "p1764580997208",
+            "mainCat": "Brand Strategy",
+            "subCat": "商赛",
+            "title": "L'Oréal Brandstorm-video",
+            "desc": "",
+            "tags": [],
+            "file": [],
+            "cover": "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580779494-{TERRAGUARD-PITCH}_00.png"
         }
     ],
     "categories": [

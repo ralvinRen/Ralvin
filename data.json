@@ -249,8 +249,8 @@
             "isPdf": false
         },
         {
-            "id": "p1764580794845",
-            "mainCat": "Brand Strategy",
+            "id": "p1764580927589",
+            "mainCat": "Artistic Expression",
             "subCat": "文创设计",
             "title": "水乡客厅·区域公共品牌视觉形象设计",
             "desc": "本案以“水乡客厅”为题，旨在构建一套兼具传统韵味与未来感的区域品牌形象。标志设计以汉字“水”为原点，融合地标建筑“方厅水院”的轮廓与“榫卯”结构，通过1:1.618的黄金分割比例严谨构图，呈现出“水脉相连，倒影成双”的视觉美感。从精细的导视图标到宏大的户外媒介，建立了一套完整、可感知的品牌触点系统。",
@@ -259,8 +259,14 @@
                 "VI设计",
                 "城市形象"
             ],
-            "file": [],
-            "cover": "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580577653-Water_Town_Living_Room1.jpg"
+            "file": [
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650842-Water_Town_Living_Room4.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650770-Water_Town_Living_Room1.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650675-Water_Town_Living_Room3.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580650080-Water_Town_Living_Room2.jpg"
+            ],
+            "cover": "",
+            "isPdf": false
         }
     ],
     "categories": [

@@ -480,7 +480,7 @@
 
             // 加载时：直接读取 GitHub Raw
             useEffect(() => {
-                fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_FILE_PATH}?t=${Date.now()}`)
+                fetch('data.json?t=' + Date.now())
                     .then(r => r.json())
                     .then(data => {
                         console.log("Loaded from GitHub");
@@ -578,5 +578,6 @@
 
 </html>
 // fix contact
+
 
 

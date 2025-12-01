@@ -17,7 +17,7 @@ export async function onRequestPost(context) {
     // 3. 定义目标
     const GITHUB_OWNER = "ralvinRen";
     const GITHUB_REPO = "Ralvin";
-    const FILE_PATH = "data.json";
+    const FILE_PATH = "database.json";
 
     // 4. 调用 GitHub API
     // 注意：这里使用的是 env.GH_TOKEN，一会要去 Cloudflare 设置这个变量

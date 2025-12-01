@@ -63,7 +63,7 @@
         // GitHub Config
         const GITHUB_OWNER = 'ralvinRen';
         const GITHUB_REPO = 'Ralvin';
-        const GITHUB_FILE_PATH = 'database.json';
+        const GITHUB_FILE_PATH = 'data.json';
 
         // Default Data (Prevent white screen)
         const DEFAULT_DATA = { 
@@ -480,7 +480,7 @@
 
             // 加载时：直接读取 GitHub Raw
             useEffect(() => {
-              fetch('database.json?t=' + Date.now())
+              fetch('data.json?t=' + Date.now())
                     .then(r => r.json())
                     .then(data => {
                         console.log("Loaded from GitHub");
@@ -578,6 +578,7 @@
 
 </html>
 // fix contact
+
 
 
 

@@ -181,7 +181,14 @@
             "mainCat": "Artistic Expression",
             "subCat": "影像",
             "title": "器·观",
-            "file": [],
+            "file": [
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580243043-lake-pancreas.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580242917-rainforest-stomach.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580242864-river-kidneys.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580241811-wetland-lung.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580242792-grassland-liver.jpg",
+                "https://pub-d262637c2ab34548b251229fb3013931.r2.dev/1764580242695-ocean-heart.jpg"
+            ],
             "cover": "grassland-liver.jpg",
             "desc": "本系列作品构建了一种宏大的视觉隐喻：地球并非死寂的客体，而是一个完整的、活着的“超级生命体” 。通过AIGC生成的卫星地图视角，作品将宏观的自然地貌与微观的人体器官进行了超现实的“同构” ，揭示了自然生态系统与人体生理机能之间惊人的相似性。",
             "tags": [
@@ -189,7 +196,8 @@
                 "创意合成",
                 "AIGC",
                 "人与自然"
-            ]
+            ],
+            "isPdf": false
         }
     ],
     "categories": [

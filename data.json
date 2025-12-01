@@ -179,7 +179,7 @@
         {
             "id": "a7",
             "mainCat": "Artistic Expression",
-            "subCat": "AIGC",
+            "subCat": "影像",
             "title": "器·观",
             "file": [],
             "cover": "grassland-liver.jpg",
@@ -213,5 +213,6 @@
                 "AIGC"
             ]
         }
-    ]
+    ],
+    "events": {}
 }

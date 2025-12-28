@@ -453,7 +453,7 @@
                 }
 
                 try {
-                    const res = await fetch('/.netlify/functions/update', {
+                    const res = await fetch('/update', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -547,4 +547,5 @@
         root.render(<MacOS />);
     </script>
 </body>
+
 </html>
